@@ -488,11 +488,11 @@ def worker_process(i, jobs_queue, output_queue, args):
             with open(filein_name, 'r') as filein, NamedTemporaryFile(mode="w", delete=False, dir=args.tmp_dir) as fileout:
                 logging.debug("Classification: creating temporary filename {0}".format(fileout.name))
 
-                for i in filein:	
-                    parts = i.strip().split("\t")
+                for i in filein:
+                    parts = i.rstrip('\n').split("\t")
                     left = ""
                     right= ""
-                    
+
                     if len(parts) >=  args.scol and len(parts) >= args.tcol:
                         left = parts[args.scol-1]
                         right = parts[args.tcol-1]
