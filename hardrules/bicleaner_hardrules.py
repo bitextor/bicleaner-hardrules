@@ -27,7 +27,7 @@ except (SystemError, ImportError):
     from tokenizer import Tokenizer 
 
 __author__ = "Sergio Ortiz Rojas"
-__version__ "Version 1.0 # 24/05/2021 # Separate hardrules package from Bicleaner # Jaume Zaragoza"
+__version__ = "Version 1.0 # 24/05/2021 # Separate hardrules package from Bicleaner # Jaume Zaragoza"
 
 regex_blank = regex.compile("[ \u00A0]")
 regex_digit = regex.compile("[[:digit:]]")
