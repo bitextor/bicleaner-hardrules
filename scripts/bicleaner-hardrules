@@ -3,20 +3,18 @@
 import sys
 import traceback
 import logging
-import bicleaner.util as util
-import bicleaner.bicleaner_hardrules as hardrules
-
-
+import hardrules.util as util
+import hardrules.bicleaner_hardrules as hardrules
 
 def main(argv):
-	try:
-        	util.logging_setup()
-	        args = hardrules.initialization() # Parsing parameters
-	        hardrules.main(args)  # Running main program
-	except Exception as ex:
-        	tb = traceback.format_exc()
-	        logging.error(tb)
-        	sys.exit(1)
+    try:
+        util.logging_setup()
+        args = hardrules.initialization() # Parsing parameters
+        hardrules.main(args)  # Running main program
+    except Exception as ex:
+        tb = traceback.format_exc()
+        logging.error(tb)
+        sys.exit(1)
 
 if __name__=="__main__":
-	main(sys.argv[1:])
+    main(sys.argv[1:])
