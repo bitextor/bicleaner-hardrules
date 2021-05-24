@@ -15,8 +15,6 @@ from heapq import heappush, heappop
 from multiprocessing import Queue, Process, Value, cpu_count
 from tempfile import NamedTemporaryFile, gettempdir
 from timeit import default_timer
-#from sacremoses import MosesTokenizer
-
 
 #Allows to load modules while inside or outside the package
 try:
@@ -27,6 +25,9 @@ except (SystemError, ImportError):
     from util import logging_setup, check_positive, check_positive_between_zero_and_one
     from lm import DualLMFluencyFilter,LMType, DualLMStats
     from tokenizer import Tokenizer 
+
+__author__ = "Sergio Ortiz Rojas"
+__version__ "Version 1.0 # 24/05/2021 # Separate hardrules package from Bicleaner # Jaume Zaragoza"
 
 regex_blank = regex.compile("[ \u00A0]")
 regex_digit = regex.compile("[[:digit:]]")
@@ -84,7 +85,7 @@ def initialization():
     
     #LM  filtering
     groupO.add_argument('--disable_lm_filter', default=False, action='store_true', help="Don't apply LM filtering")
-    groupO.add_argument('--metadata', type=argparse.FileType('r'), default=None, help="Training metadata (YAML file)")    
+    groupO.add_argument('--metadata', type=argparse.FileType('r'), default=None, help="Bicleaner metadata (YAML file)")
     groupO.add_argument('--lm_threshold',type=check_positive_between_zero_and_one, default=0.5, help="Threshold for language model fluency scoring.")
     #groupO.add_argument('--keep_lm_result',action='store_true', help="Add an additional column to the results with the language model fluency score.")
 
@@ -93,7 +94,7 @@ def initialization():
     groupL.add_argument('-q', '--quiet', action='store_true', help='Silent logging mode')
     groupL.add_argument('--debug', action='store_true', help='Debug logging mode')
     groupL.add_argument('--logfile', type=argparse.FileType('a'), default=sys.stderr, help="Store log to a file")
-    #groupL.add_argument('-v', '--version', action='version', version="%(prog)s " + __version__, help="show version of this script and exit")
+    groupL.add_argument('-v', '--version', action='version', version="%(prog)s " + __version__, help="show version of this script and exit")
 
 
     args = parser.parse_args()
