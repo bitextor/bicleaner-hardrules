@@ -1,4 +1,8 @@
-Bicleaner-hardrules 1.0:
+Bicleaner Hard-rules 1.1:
+* Separate `wrong_tu` code.
+* Load `lm` only when necessary.
+
+Bicleaner Hard-rules 1.0:
 * Split Hardrules into a separate package.
 
 Bicleaner 0.14: 
