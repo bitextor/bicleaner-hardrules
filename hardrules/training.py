@@ -6,10 +6,8 @@ import typing
 import os
 
 try:
-    from .lm import DualLMFluencyFilter,LMType, DualLMStats
     from .util import shuffle_file
 except (SystemError, ImportError):
-    from lm import DualLMFluencyFilter,LMType, DualLMStats
     from util import shuffle_file
 
 
@@ -72,6 +70,12 @@ def train_fluency_filter(args):
 
     if not (args.lm_file_sl and args.lm_file_tl):
         return None
+
+    # Load lm modules only when needed
+    try:
+        from .lm import DualLMFluencyFilter,LMType, DualLMStats
+    except (SystemError, ImportError):
+        from lm import DualLMFluencyFilter,LMType, DualLMStats
 
     logging.info("Training LM-based fluency filter.")
 
