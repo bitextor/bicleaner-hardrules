@@ -28,7 +28,7 @@ except (SystemError, ImportError):
 
 __author__ = "Sergio Ortiz Rojas"
 __version__ = "Version 1.0 # 24/05/2021 # Separate hardrules package from Bicleaner # Jaume Zaragoza"
-__version__ = "Version 1.1 # 24/05/2021 # Load lm only when necessary # Jaume Zaragoza"
+__version__ = "Version 1.1 # 26/05/2021 # Load lm only when necessary # Jaume Zaragoza"
 
 logging_level = 0
 
