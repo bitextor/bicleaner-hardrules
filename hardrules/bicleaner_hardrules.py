@@ -39,16 +39,17 @@ def initialization():
     parser.add_argument('input',  nargs='?', type=argparse.FileType('rt', errors="replace"), default=io.TextIOWrapper(sys.stdin.buffer, errors="replace"),  help="Tab-separated bilingual tagged file")
     parser.add_argument('output', nargs='?', type=argparse.FileType('wt'), default=sys.stdout, help="Output of the classification")
     parser.add_argument('--annotated_output',default=False, action='store_true', help="Adds an extra column with each sentence's evaluation (\"keep\" if the sentence is good, otherwise the reason for rejecting")
-    
+
     #groupM = parser.add_argument_group('Mandatory')
     #groupM.add_argument("-s", "--source_lang", type=str, required=True, help="Source language (SL) of the input")
     #groupM.add_argument("-t", "--target_lang", type=str, required=True, help="Target language (TL) of the input")
-    
+
     groupO = parser.add_argument_group('Optional')
     groupO.add_argument('--tmp_dir', default=gettempdir(), help="Temporary directory where creating the temporary files of this program")
     groupO.add_argument('-b', '--block_size', type=int, default=10000, help="Sentence pairs per block")
     groupO.add_argument('-p', '--processes', type=int, default=max(1, cpu_count()-1), help="Number of processes to use")
 
+    groupO.add_argument('--score_only',action='store_true', help="Only output one column which is the hardrule tag: 0(keep) 1(discard)", default=False)
     groupO.add_argument('--disable_lang_ident', default=False, action='store_true', help="Don't apply rules that use language detecting")
     groupO.add_argument('--disable_minimal_length', default=False, action='store_true', help="Don't apply minimal length rule")
     groupO.add_argument('--disable_porn_removal', default=False, action='store_true', help="Don't apply porn removal")
@@ -255,18 +256,26 @@ def worker_process(i, jobs_queue, output_queue, args):
                         logging.error("WARNING: scol ({}) or tcol ({}) indexes above column number ({})".format(args.scol, args.tcol, len(parts)))        
                         continue
                     wrong_tu_results = wrong_tu(left,right, args, lm_filter, porn_removal, porn_tokenizer)
+
+                    # Print input sentences when scoring_only is disabled
+                    if not args.score_only:
+                        fileout.write("\t".join(parts) + "\t")
+
+                    # Print scores
                     if wrong_tu_results != False:
-                        fileout.write("\t".join(parts)+"\t0")
-                        if args.annotated_output:                            
+                        fileout.write("0")
+                        # Print rule annotation
+                        if args.annotated_output:
                             fileout.write("\t{}\n".format(wrong_tu_results))
                         else:
                             fileout.write("\n")
                     else:
-                        fileout.write("\t".join(parts)+"\t1")
+                        fileout.write("1")
+                        # Print keep annotation
                         if args.annotated_output:
                             fileout.write("\tkeep\n")
                         else:
-                            fileout.write("\n")    
+                            fileout.write("\n")
 
                 ojob = (nblock, fileout.name)
                 filein.close()

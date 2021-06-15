@@ -1,3 +1,6 @@
+Bicleaner Hard-rules 1.2:
+* Add `--score_only` mode.
+
 Bicleaner Hard-rules 1.1:
 * Separate `wrong_tu` code.
 * Load `lm` only when necessary.
