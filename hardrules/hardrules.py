@@ -1,9 +1,12 @@
+import unicodedata
+import logging
 import pycld2
 import regex
+import sys
 
+tbl_non_alpha = [chr(i) for i in range(sys.maxunicode) if not unicodedata.category(chr(i)).startswith('L')]
+tbl_non_alpha = str.maketrans('', '', ''.join(tbl_non_alpha))
 regex_blank = regex.compile("[ \u00A0]")
-regex_digit = regex.compile("[[:digit:]]")
-regex_punct = regex.compile("[[:punct:]]")
 regex_alpha = regex.compile("[[:alpha:]]")
 regex_url = regex.compile('((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]|\((:?[^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?\xab\xbb\u201c\u201d\u2018\u2019]))')
 #regex_breadcrumbs = regex.compile("([ ][-/»][ ]|[|<>→←]|[ ][:][:][ ])")
@@ -22,29 +25,15 @@ safe_noise_detection_langs = {"en", "es", "fr", "pl", "de", "it", "pt", "nl", "c
 safe_noise_detection_langs = {"en", "es", "fr", "pl", "de", "it", "pt", "nl", "cs", "ro", "fi", "lv", "et", "bg", "hr", "da", "hu", "ga", "eu", "gl", "sl", "sv", "mt", "sk", "is", "lt", "nb", "nn", "no"}
 similar_pairs = [{"es","ca"}, {"es","gl"}, {"pt","gl"}, {"no","nn"}, {"no", "da"}]
 
-def c_identical(left, right, left_lang, right_lang):
-    if left_lang =="nb":
-        left_lang="no"
-    if right_lang=="nb":
-        right_lang="no"
-#    if ({left_lang, right_lang} in similar_pairs):        
-#        return True
+def c_identical_alpha(left, right):
+    left = left.translate(tbl_non_alpha)
+    right = right.translate(tbl_non_alpha)
     return left.casefold() != right.casefold()
-    
-def c_identical_wo_digits(left, right, left_lang, right_lang):
-    left = regex_digit.sub("", left)
-    right = regex_digit.sub("", right)
-    return c_identical(left, right, left_lang, right_lang)
 
-def c_identical_wo_punct(left, right, left_lang, right_lang):
-    left = regex_punct.sub("", left)
-    right = regex_punct.sub("", right)
-    return c_identical(left, right, left_lang, right_lang)
-        
 def c_minimal_length(sentence):
     """ Counts number of whitespace, requires >= 2 (3 words) """
     return len(regex_blank.findall(sentence)) >= 2
-        
+
 def c_length(left, right):
     return 0.5 <= float(len(left))/float(len(right)) <= 2.0
 
@@ -173,12 +162,8 @@ def wrong_tu(left, right, args, lm_filter = None, porn_removal = None, porn_toke
         return "c_minimal_length(left) and c_minimal_length(right)"
     elif not (c_length(left, right) or c_length_bytes(left, right)): 
         return "c_length or c_length_bytes"
-    elif not c_identical(left, right, args.source_lang, args.target_lang):
-        return "c_identical"
-    elif not c_identical_wo_digits(left, right, args.source_lang, args.target_lang):
-        return "c_identical_wo_digits"    
-    elif not c_identical_wo_punct(left, right, args.source_lang, args.target_lang):
-        return "c_identical_wo_punct"    
+    elif not c_identical_alpha(left, right):
+        return "c_identical_alpha"
     elif (not args.disable_lang_ident and not  c_different_language(left, right, args.source_lang, args.target_lang)):
         return "c_different_language"
     elif not c_majority_alpha(left):
