@@ -24,6 +24,8 @@ safe_noise_detection_langs = {"en", "es", "fr", "pl", "de", "it", "pt", "nl", "c
 
 safe_noise_detection_langs = {"en", "es", "fr", "pl", "de", "it", "pt", "nl", "cs", "ro", "fi", "lv", "et", "bg", "hr", "da", "hu", "ga", "eu", "gl", "sl", "sv", "mt", "sk", "is", "lt", "nb", "nn", "no"}
 similar_pairs = [{"es","ca"}, {"es","gl"}, {"pt","gl"}, {"no","nn"}, {"no", "da"}]
+atilde_langs = {"pt"}
+acumflex_langs = {"cy", "fr", "fa", "it", "pt", "tr", "vi",}
 
 def c_identical_alpha(left, right):
     left = left.translate(tbl_non_alpha)
@@ -98,7 +100,14 @@ def c_reliable_long_language(sentence, language):
             return False
     else:
         return True
-        
+
+def c_no_bad_encoding(sentence, lang):
+    if lang not in atilde_langs and 'Ã' in sentence:
+        return False
+    if lang not in acumflex_langs and 'Â' in sentence:
+        return False
+    return True
+
 def c_alpha(sentence):
     return len(regex_alpha.findall(sentence)) > 0
     
@@ -218,6 +227,8 @@ def wrong_tu(left, right, args, lm_filter = None, porn_removal = None, porn_toke
         return 'c_no_literals(["{{", "%s", "}}"], left)'
     elif not c_no_literals(["{{", "%s", "}}"], right):
         return 'c_no_literals(["{{", "%s", "}}"], right)'
+    elif not c_no_bad_encoding(left, args.source_lang) and not c_no_bad_encoding(right, args.target_lang):
+        return 'c_no_bad_encoding(["Â","Ã"])'
     elif left.istitle() and right.istitle():
         return 'left.istitle() and right.istitle()'
     elif (not args.disable_lang_ident and not  c_reliable_long_language(left, args.source_lang)):
