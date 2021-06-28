@@ -1,3 +1,7 @@
+Bicleaner Hard-rules 1.3:
+* Filter bad encoding issues with Ã and Â
+* Change identical rules with a single identical without non-alpha
+
 Bicleaner Hard-rules 1.2:
 * Add `--score_only` mode.
 
