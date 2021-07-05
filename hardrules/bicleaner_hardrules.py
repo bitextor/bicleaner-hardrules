@@ -253,10 +253,10 @@ def worker_process(i, jobs_queue, output_queue, args):
                     if len(parts) >=  args.scol and len(parts) >= args.tcol:
                         left = parts[args.scol-1]
                         right = parts[args.tcol-1]
+                        wrong_tu_results = wrong_tu(left,right, args, lm_filter, porn_removal, porn_tokenizer)
                     else:
                         logging.error("scol ({}) or tcol ({}) indexes above column number ({})".format(args.scol, args.tcol, len(parts)))
-                        sys.exit(1)
-                    wrong_tu_results = wrong_tu(left,right, args, lm_filter, porn_removal, porn_tokenizer)
+                        wrong_tu_results = "c_wrong_cols"
 
                     # Print input sentences when scoring_only is disabled
                     if not args.score_only:
