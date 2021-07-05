@@ -352,8 +352,11 @@ def perform_hardrules_filtering(args):
 
     logging.info("End mapping")
 
+    errors = False
     for w in workers:
         w.join()
+        if w.exitcode != 0:
+            errors = True
 
     # Reducer termination
     output_queue.put(None)
@@ -367,10 +370,16 @@ def perform_hardrules_filtering(args):
     logging.info("Elapsed time {0:.2f} s".format(elapsed_time))
     logging.info("Troughput: {0} rows/s".format(int((nline*1.0)/elapsed_time)))
 
+    return errors
+
 def main(args):
     logging.info("Executing main program...")
-    perform_hardrules_filtering(args)
-    logging.info("Program finished")
+    errors = perform_hardrules_filtering(args)
+    if errors:
+        logging.error("Program finished with errors")
+        sys.exit(1)
+    else:
+        logging.info("Program finished")
 
 if __name__ == '__main__':
     try: 
