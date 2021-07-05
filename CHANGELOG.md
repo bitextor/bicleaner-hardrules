@@ -1,6 +1,8 @@
 Bicleaner Hard-rules 1.3:
 * Filter bad encoding issues with Ã and Â
 * Change identical rules with a single identical without non-alpha
+* Return exit code 1 when a process encounters an error.
+* Tag as wrong the sentence pairs with an empty side.
 
 Bicleaner Hard-rules 1.2:
 * Add `--score_only` mode.
