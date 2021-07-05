@@ -159,6 +159,10 @@ def c_no_porn(left, right, model, side, porn_tokenizer):
     return model.predict(porn_tokenizer.detokenize(tok))[0][0] == '__label__negative'
 
 def wrong_tu(left, right, args, lm_filter = None, porn_removal = None, porn_tokenizer = None):
+    if not left:
+        return "c_no_empty(left)"
+    if not right:
+        return "c_no_empty(right)"
     if len(left) >= 1024:
         return "len(left) >= 1024"
     if len(right) >= 1024:
