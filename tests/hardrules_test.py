@@ -58,14 +58,14 @@ def bicleaner_test(executable, training_yaml ):
     return scores
 
 def test_lite_process():
-    expected = [0, 0, 0, 0, 0, 1, 0, 0, 1, 0]
+    expected = [0, 0, 0, 0, 0, 1, 0, 1, 1, 0]
     results = bicleaner_test("bicleaner-hardrules","en-de.yaml")
     print("Checking test results...")
     for i in range(len(expected)):
         assert(results[i] == expected[i])
 
 def test_lite_process_nolm():
-    expected = [0, 0, 0, 1, 0, 1, 0, 0, 1, 0]
+    expected = [0, 0, 0, 0, 0, 1, 0, 1, 1, 0]
     results = bicleaner_test("bicleaner-hardrules","en-de.nolm.yaml")
     print("Checking test results...")
     for i in range(len(expected)):
