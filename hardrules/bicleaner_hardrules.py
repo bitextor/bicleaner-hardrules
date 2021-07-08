@@ -30,6 +30,7 @@ except (SystemError, ImportError):
 __author__ = "Sergio Ortiz Rojas"
 __version__ = "Version 1.0 # 24/05/2021 # Separate hardrules package from Bicleaner # Jaume Zaragoza"
 __version__ = "Version 1.1 # 26/05/2021 # Load lm only when necessary # Jaume Zaragoza"
+__version__ = "Version 1.3 # 05/07/2021 # Discard bad encoding Ä, check only identical with alphabetic and discard empty sides # Jaume Zaragoza"
 
 logging_level = 0
 
@@ -260,10 +261,10 @@ def worker_process(i, jobs_queue, output_queue, args):
                     if len(parts) >=  args.scol and len(parts) >= args.tcol:
                         left = parts[args.scol-1]
                         right = parts[args.tcol-1]
+                        wrong_tu_results = wrong_tu(left,right, args, lm_filter, porn_removal, porn_tokenizer, fastspell_src, fastspell_trg)
                     else:
-                        logging.error("WARNING: scol ({}) or tcol ({}) indexes above column number ({})".format(args.scol, args.tcol, len(parts)))        
-                        continue
-                    wrong_tu_results = wrong_tu(left,right, args, lm_filter, porn_removal, porn_tokenizer, fastspell_src, fastspell_trg)
+                        logging.error("scol ({}) or tcol ({}) indexes above column number ({})".format(args.scol, args.tcol, len(parts)))
+                        wrong_tu_results = "c_wrong_cols"
 
                     # Print input sentences when scoring_only is disabled
                     if not args.score_only:
@@ -360,8 +361,11 @@ def perform_hardrules_filtering(args):
 
     logging.info("End mapping")
 
+    errors = False
     for w in workers:
         w.join()
+        if w.exitcode != 0:
+            errors = True
 
     # Reducer termination
     output_queue.put(None)
@@ -375,10 +379,16 @@ def perform_hardrules_filtering(args):
     logging.info("Elapsed time {0:.2f} s".format(elapsed_time))
     logging.info("Troughput: {0} rows/s".format(int((nline*1.0)/elapsed_time)))
 
+    return errors
+
 def main(args):
     logging.info("Executing main program...")
-    perform_hardrules_filtering(args)
-    logging.info("Program finished")
+    errors = perform_hardrules_filtering(args)
+    if errors:
+        logging.error("Program finished with errors")
+        sys.exit(1)
+    else:
+        logging.info("Program finished")
 
 if __name__ == '__main__':
     try: 
