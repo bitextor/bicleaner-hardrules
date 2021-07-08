@@ -236,9 +236,9 @@ def wrong_tu(left, right, args, lm_filter = None, porn_removal = None, porn_toke
 #        return "c_reliable_long_language(left, sourcelang)"
 #    elif (not args.disable_lang_ident and  not c_reliable_long_language(right, args.target_lang)):
 #        return "c_reliable_long_language(right, targetlang)"
-    elif (not args.disable_lang_ident and not  fastspell_src.getlang(source)==args.source_lang):
+    elif (not args.disable_lang_ident and not  fastspell_src.getlang(left)==args.source_lang):
         return "c_wrong_language(left, sourcelang)"
-    elif (not args.disable_lang_ident and  not fastspell_trg.getlang(target)==args.target_lang):
+    elif (not args.disable_lang_ident and  not fastspell_trg.getlang(right)==args.target_lang):
         return "c_wrong_language(right, targetlang)"
     elif not args.disable_porn_removal and porn_removal != None and not c_no_porn(left, right, porn_removal, args.metadata_yaml['porn_removal_side'], porn_tokenizer):
         return "c_no_porn"
