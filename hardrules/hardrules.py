@@ -1,8 +1,8 @@
 import unicodedata
 import logging
-import pycld2
 import regex
 import sys
+from fastspell import FastSpell
 
 tbl_non_alpha = [chr(i) for i in range(sys.maxunicode) if not unicodedata.category(chr(i)).startswith('L')]
 tbl_non_alpha = str.maketrans('', '', ''.join(tbl_non_alpha))
@@ -23,7 +23,7 @@ regex_glued_words = regex.compile("([[:alpha:]]*[[:upper:]]{1}[[:lower:]]+){3}")
 safe_noise_detection_langs = {"en", "es", "fr", "pl", "de", "it", "pt", "nl", "cs", "ro", "fi", "lv", "et", "bg", "hr", "da", "hu", "ga", "eu", "gl", "sl", "sv", "mt", "sk"}
 
 safe_noise_detection_langs = {"en", "es", "fr", "pl", "de", "it", "pt", "nl", "cs", "ro", "fi", "lv", "et", "bg", "hr", "da", "hu", "ga", "eu", "gl", "sl", "sv", "mt", "sk", "is", "lt", "nb", "nn", "no"}
-similar_pairs = [{"es","ca"}, {"es","gl"}, {"pt","gl"}, {"no","nn"}, {"no", "da"}]
+#similar_pairs = [{"es","ca"}, {"es","gl"}, {"pt","gl"}, {"no","nn"}, {"no", "da"}]
 atilde_langs = {"pt"}
 acumflex_langs = {"cy", "fr", "fa", "it", "pt", "tr", "vi",}
 
@@ -41,7 +41,7 @@ def c_length(left, right):
 
 def c_length_bytes(left, right):
     return 0.5 <= float(len(left.encode("utf8")))/float(len(right.encode("utf8"))) <= 2.0
-
+'''
 def c_different_language(left, right, left_lang, right_lang):
     if left_lang =="nb":
         left_lang="no"
@@ -79,7 +79,8 @@ def c_different_language(left, right, left_lang, right_lang):
             return True
         else:    
             return False
-        
+'''
+'''        
 def c_reliable_long_language(sentence, language):
     if language=="nb":
         language = "no"
@@ -100,7 +101,7 @@ def c_reliable_long_language(sentence, language):
             return False
     else:
         return True
-
+'''
 def c_no_bad_encoding(sentence, lang):
     if lang not in atilde_langs and 'Ã' in sentence:
         return False
@@ -158,7 +159,7 @@ def c_no_porn(left, right, model, side, porn_tokenizer):
         tok = porn_tokenizer.tokenize(right.lower())
     return model.predict(porn_tokenizer.detokenize(tok))[0][0] == '__label__negative'
 
-def wrong_tu(left, right, args, lm_filter = None, porn_removal = None, porn_tokenizer = None):
+def wrong_tu(left, right, args, lm_filter = None, porn_removal = None, porn_tokenizer = None, fastspell_src = None, fastspell_trg = None):
     if len(left) >= 1024:
         return "len(left) >= 1024"
     if len(right) >= 1024:
@@ -173,8 +174,8 @@ def wrong_tu(left, right, args, lm_filter = None, porn_removal = None, porn_toke
         return "c_length or c_length_bytes"
     elif not c_identical_alpha(left, right):
         return "c_identical_alpha"
-    elif (not args.disable_lang_ident and not  c_different_language(left, right, args.source_lang, args.target_lang)):
-        return "c_different_language"
+#    elif (not args.disable_lang_ident and not  c_different_language(left, right, args.source_lang, args.target_lang)):
+#        return "c_different_language"
     elif not c_majority_alpha(left):
         return "c_majority_alpha(left)"
     elif not c_majority_alpha(right):
@@ -231,10 +232,14 @@ def wrong_tu(left, right, args, lm_filter = None, porn_removal = None, porn_toke
         return 'c_no_bad_encoding(["Â","Ã"])'
     elif left.istitle() and right.istitle():
         return 'left.istitle() and right.istitle()'
-    elif (not args.disable_lang_ident and not  c_reliable_long_language(left, args.source_lang)):
-        return "c_reliable_long_language(left, sourcelang)"
-    elif (not args.disable_lang_ident and  not c_reliable_long_language(right, args.target_lang)):
-        return "c_reliable_long_language(right, targetlang)"
+#    elif (not args.disable_lang_ident and not  c_reliable_long_language(left, args.source_lang)):
+#        return "c_reliable_long_language(left, sourcelang)"
+#    elif (not args.disable_lang_ident and  not c_reliable_long_language(right, args.target_lang)):
+#        return "c_reliable_long_language(right, targetlang)"
+    elif (not args.disable_lang_ident and not  fastspell_src.getlang(source)==args.source_lang):
+        return "c_wrong_language(left, sourcelang)"
+    elif (not args.disable_lang_ident and  not fastspell_trg.getlang(target)==args.target_lang):
+        return "c_wrong_language(right, targetlang)"
     elif not args.disable_porn_removal and porn_removal != None and not c_no_porn(left, right, porn_removal, args.metadata_yaml['porn_removal_side'], porn_tokenizer):
         return "c_no_porn"
     elif  args.disable_lm_filter == False and lm_filter != None and lm_filter.score(left, right) < args.lm_threshold:
