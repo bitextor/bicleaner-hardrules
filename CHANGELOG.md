@@ -3,6 +3,7 @@ Bicleaner Hard-rules 1.3:
 * Change identical rules with a single identical without non-alpha
 * Return exit code 1 when a process encounters an error.
 * Tag as wrong the sentence pairs with an empty side.
+* Language identifier is now FastSpell
 * Tag as wrong the sentence pairs with wrong number of columns.
 
 Bicleaner Hard-rules 1.2:

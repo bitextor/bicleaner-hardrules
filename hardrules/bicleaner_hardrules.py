@@ -8,6 +8,7 @@ import sys
 import traceback
 import yaml
 import fasttext
+from fastspell import FastSpell
 
 from heapq import heappush, heappop
 from multiprocessing import Queue, Process, Value, cpu_count
@@ -235,6 +236,13 @@ def worker_process(i, jobs_queue, output_queue, args):
     else:
         porn_removal = None
         porn_tokenizer = None
+        
+    if not args.disable_lang_ident:
+        fastspell_src = FastSpell.FastSpell(args.source_lang, mode="cons")
+        fastspell_trg = FastSpell.FastSpell(args.target_lang, mode="cons")
+    else:
+        fastspell_src = None
+        fastspell_trg = None    
 
     while True:
         job = jobs_queue.get()
@@ -253,7 +261,7 @@ def worker_process(i, jobs_queue, output_queue, args):
                     if len(parts) >=  args.scol and len(parts) >= args.tcol:
                         left = parts[args.scol-1]
                         right = parts[args.tcol-1]
-                        wrong_tu_results = wrong_tu(left,right, args, lm_filter, porn_removal, porn_tokenizer)
+                        wrong_tu_results = wrong_tu(left,right, args, lm_filter, porn_removal, porn_tokenizer, fastspell_src, fastspell_trg)
                     else:
                         logging.error("scol ({}) or tcol ({}) indexes above column number ({})".format(args.scol, args.tcol, len(parts)))
                         wrong_tu_results = "c_wrong_cols"
