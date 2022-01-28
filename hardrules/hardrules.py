@@ -198,7 +198,7 @@ class Hardrules():
     def c_wrong_language(self, sentence, side='left'):
         if self.fastspell_src is None:
             return True
-        #TODO won't work for all rules mode
+
         if side == 'left':
             lang = self.src_lang
             fastspell = self.fastspell_src
@@ -275,7 +275,6 @@ class Hardrules():
             return True
     '''
     def c_no_bad_encoding(self, sentence, side):
-        #TODO how do we get the lang if we don't know the side here
         lang = self.src_lang if side == 'left' else self.trg_lang
 
         if lang not in atilde_langs and 'Ã' in sentence:

@@ -238,9 +238,17 @@ def worker_process(i, jobs_queue, output_queue, args):
                     if wrong_tu_results != False:
                         fileout.write("0")
                         # Print rule annotation
-                        #TODO print comma separated list of annotated rules
                         if args.annotated_output:
-                            fileout.write("\t{}\n".format(wrong_tu_results))
+                            out = "\t"
+                            if args.run_all_rules:
+                                # print comma separated list of annotated rules
+                                for i, res in enumerate(wrong_tu_results):
+                                    if i != 0:
+                                        out += '+'
+                                    out += res
+                            else:
+                                out += wrong_tu_results
+                            fileout.write(out + '\n')
                         else:
                             fileout.write("\n")
                     else:
