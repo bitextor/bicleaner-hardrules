@@ -18,12 +18,12 @@ from timeit import default_timer
 #Allows to load modules while inside or outside the package
 try:
     from .util import logging_setup, check_positive, check_positive_between_zero_and_one
-    from .hardrules import wrong_tu
+    from .hardrules import Hardrules
     from .lm import DualLMFluencyFilter,LMType, DualLMStats
     from .tokenizer import Tokenizer
 except (SystemError, ImportError):
     from util import logging_setup, check_positive, check_positive_between_zero_and_one
-    from hardrules import wrong_tu
+    from hardrules import Hardrules
     from lm import DualLMFluencyFilter,LMType, DualLMStats
     from tokenizer import Tokenizer 
 
@@ -48,11 +48,13 @@ def initialization():
     #groupM.add_argument("-t", "--target_lang", type=str, required=True, help="Target language (TL) of the input")
 
     groupO = parser.add_argument_group('Optional')
+    groupO.add_argument('-c', '--config', type=argparse.FileType('r'), default=None, help="Rules configuration file")
     groupO.add_argument('--tmp_dir', default=gettempdir(), help="Temporary directory where creating the temporary files of this program")
     groupO.add_argument('-b', '--block_size', type=int, default=10000, help="Sentence pairs per block")
     groupO.add_argument('-p', '--processes', type=int, default=max(1, cpu_count()-1), help="Number of processes to use")
 
     groupO.add_argument('--score_only',action='store_true', help="Only output one column which is the hardrule tag: 0(keep) 1(discard)", default=False)
+    groupO.add_argument('-A', '--run_all_rules',action='store_true', help="Run all rules for each sentence instead of stopping at first discard", default=False)
     groupO.add_argument('--disable_lang_ident', default=False, action='store_true', help="Don't apply rules that use language detecting")
     groupO.add_argument('--disable_minimal_length', default=False, action='store_true', help="Don't apply minimal length rule")
     groupO.add_argument('--disable_porn_removal', default=False, action='store_true', help="Don't apply porn removal")
@@ -147,37 +149,17 @@ def initialization():
                 traceback.print_exc()
                 logging.error("Error retrieving source or target languages from metadata.")
                 sys.exit(1)
-                
+
+    # Load rules config
+    if args.config:
+        args.config = yaml.safe_load(args.config)
+
     if args.disable_lm_filter:
         logging.info("LM filtering disabled.")
     if args.disable_porn_removal:
         logging.info("Porn removal disabled.")
 
     return args
-    
-def load_lm_filter(source_lang, target_lang, metadata_yaml, source_tokenizer_command, target_tokenizer_command):
-    
-    logging.debug("Loading LM filter")
-
-    lmFilter = DualLMFluencyFilter( LMType[metadata_yaml['lm_type']], source_lang, target_lang, source_tokenizer_command, target_tokenizer_command)
-    stats=DualLMStats(metadata_yaml['clean_mean_perp'], metadata_yaml['clean_stddev_perp'], metadata_yaml['noisy_mean_perp'], metadata_yaml['noisy_stddev_perp'] )
-
-    fullpath_source_lm=os.path.join(metadata_yaml["yamlpath"], metadata_yaml['source_lm'])
-    if os.path.isfile(fullpath_source_lm):
-        source_lm = fullpath_source_lm
-    else:
-        source_lm = metadata_yaml['source_lm']
-        
-        
-    fullpath_target_lm=os.path.join(metadata_yaml["yamlpath"], metadata_yaml['target_lm'])   
-    if os.path.isfile(fullpath_target_lm):
-        target_lm = fullpath_target_lm
-    else:
-        target_lm = metadata_yaml['target_lm']
-    
-    lmFilter.load(source_lm, target_lm, stats)
-    
-    return lmFilter
 
 def reduce_process(output_queue, args):
     h = []
@@ -223,27 +205,8 @@ def reduce_process(output_queue, args):
     args.output.close()
     
 def worker_process(i, jobs_queue, output_queue, args):
-    if not args.disable_lm_filter:
-        lm_filter = load_lm_filter(args.source_lang, args.target_lang, args.metadata_yaml, args.source_tokenizer_command, args.target_tokenizer_command)
-    else:
-        lm_filter = None
-
-    if not args.disable_porn_removal:
-        porn_removal = args.porn_removal
-        if args.metadata_yaml['porn_removal_side'] == 'tl':
-            porn_tokenizer = Tokenizer(args.target_tokenizer_command, args.target_lang)
-        else:
-            porn_tokenizer = Tokenizer(args.source_tokenizer_command, args.source_lang)
-    else:
-        porn_removal = None
-        porn_tokenizer = None
-        
-    if not args.disable_lang_ident:
-        fastspell_src = FastSpell.FastSpell(args.source_lang, mode="cons")
-        fastspell_trg = FastSpell.FastSpell(args.target_lang, mode="cons")
-    else:
-        fastspell_src = None
-        fastspell_trg = None    
+    # Load Hardrules object
+    hardrules = Hardrules(args)
 
     while True:
         job = jobs_queue.get()
@@ -262,7 +225,7 @@ def worker_process(i, jobs_queue, output_queue, args):
                     if len(parts) >=  args.scol and len(parts) >= args.tcol:
                         left = parts[args.scol-1]
                         right = parts[args.tcol-1]
-                        wrong_tu_results = wrong_tu(left,right, args, lm_filter, porn_removal, porn_tokenizer, fastspell_src, fastspell_trg)
+                        wrong_tu_results = hardrules.wrong_tu(left, right)
                     else:
                         logging.error("scol ({}) or tcol ({}) indexes above column number ({})".format(args.scol, args.tcol, len(parts)))
                         wrong_tu_results = "c_wrong_cols"
@@ -275,6 +238,7 @@ def worker_process(i, jobs_queue, output_queue, args):
                     if wrong_tu_results != False:
                         fileout.write("0")
                         # Print rule annotation
+                        #TODO print comma separated list of annotated rules
                         if args.annotated_output:
                             fileout.write("\t{}\n".format(wrong_tu_results))
                         else:

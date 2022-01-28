@@ -255,6 +255,30 @@ class DualLMFluencyFilter:
             self.tl_filter.cleanup()
         return stats
 
+def load_lm_filter(source_lang, target_lang, metadata_yaml, source_tokenizer_command, target_tokenizer_command):
+    logging.debug("Loading LM filter")
+
+    lmFilter = DualLMFluencyFilter( LMType[metadata_yaml['lm_type']], source_lang, target_lang, source_tokenizer_command, target_tokenizer_command)
+    stats=DualLMStats(metadata_yaml['clean_mean_perp'], metadata_yaml['clean_stddev_perp'], metadata_yaml['noisy_mean_perp'], metadata_yaml['noisy_stddev_perp'] )
+
+    fullpath_source_lm=os.path.join(metadata_yaml["yamlpath"], metadata_yaml['source_lm'])
+    if os.path.isfile(fullpath_source_lm):
+        source_lm = fullpath_source_lm
+    else:
+        source_lm = metadata_yaml['source_lm']
+
+    fullpath_target_lm=os.path.join(metadata_yaml["yamlpath"], metadata_yaml['target_lm'])   
+    if os.path.isfile(fullpath_target_lm):
+        target_lm = fullpath_target_lm
+    else:
+        target_lm = metadata_yaml['target_lm']
+
+    lmFilter.load(source_lm, target_lm, stats)
+
+    return lmFilter
+
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--language",required=True)
