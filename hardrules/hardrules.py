@@ -79,7 +79,7 @@ class Hardrules():
         if not args.disable_porn_removal:
             self.porn_removal_side = args.metadata_yaml['porn_removal_side']
             self.porn_removal = args.porn_removal
-            if porn_removal_side == 'tl':
+            if self.porn_removal_side == 'tl':
                 self.porn_tokenizer = Tokenizer(args.target_tokenizer_command,
                                                 args.target_lang)
             else:
@@ -331,9 +331,9 @@ class Hardrules():
             return True
 
         if self.porn_removal_side == "sl":
-            tok = porn_tokenizer.tokenize(left.lower())
+            tok = self.porn_tokenizer.tokenize(left.lower())
         elif self.porn_removal_side == "tl":
-            tok = porn_tokenizer.tokenize(right.lower())
+            tok = self.porn_tokenizer.tokenize(right.lower())
         else:
             raise Exception(f"c_no_porn rule needs 'sl' or 'tl' param, not {self.porn_removal_side}")
         logging.debug(self.porn_removal.predict(self.porn_tokenizer.detokenize(tok))[0][0])
