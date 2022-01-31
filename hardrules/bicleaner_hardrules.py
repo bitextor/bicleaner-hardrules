@@ -19,13 +19,9 @@ from timeit import default_timer
 try:
     from .util import logging_setup, check_positive, check_positive_between_zero_and_one
     from .hardrules import Hardrules
-    from .lm import DualLMFluencyFilter,LMType, DualLMStats
-    from .tokenizer import Tokenizer
 except (SystemError, ImportError):
     from util import logging_setup, check_positive, check_positive_between_zero_and_one
     from hardrules import Hardrules
-    from lm import DualLMFluencyFilter,LMType, DualLMStats
-    from tokenizer import Tokenizer 
 
 __author__ = "Sergio Ortiz Rojas"
 __version__ = "Version 1.0 # 24/05/2021 # Separate hardrules package from Bicleaner # Jaume Zaragoza"
