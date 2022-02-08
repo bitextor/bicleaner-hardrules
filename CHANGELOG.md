@@ -1,3 +1,9 @@
+Bicleaner Hard-rules 1.4:
+* Parametrized hardrules: now each rule can be enabled or disabled via YAML config file.
+* Run all mode: run all rules instead of stopping in the first discard.
+* New hardrule: discard sentences that contain repeated words
+* Avoid downloading multiple fasttext models in parallel on first run.
+
 Bicleaner Hard-rules 1.3.1:
 * Fix PyPi release.
 

@@ -68,6 +68,7 @@ bicleaner-hardrules [-h]
                     [--tmp_dir TMP_DIR]
                     [-b BLOCK_SIZE]
                     [-p PROCESSES]
+                    [--run_all]
                     [--disable_lang_ident]
                     [--disable_minimal_length]
                     [--scol SCOL]
@@ -104,6 +105,8 @@ bicleaner-hardrules [-h]
   * `-b BLOCK_SIZE, --block_size BLOCK_SIZE`: Sentence pairs per block (default: 10000)
   * `-p PROCESSES, --processes PROCESSES`: Number of processes to use (default: all CPUs minus one)
   * `--lm_threshold LM_THRESHOLD`: Threshold for language model fluency scoring. All sentence pairs whose LM fluency score falls below the threshold are removed (classifier score set to 0), unless the option --keep_lm_result is set. (default: 0.5)
+  * `-A` or `--run_all`: Run all rules for each sentence instead of stopping at first discard (default: False)
+  * `-c CONFIG.yml` or `--config CONFIG.yml`: Rules configuration file (default: None)
   * `--disable_hardrules`: Disables the bicleaner_hardrules filtering (only bicleaner_classify is applied) (default: False)
   * `--disable_lm_filter`: Disables LM filtering.
   * `--disable_porn_removal`: Disables porn removal.
