@@ -213,7 +213,7 @@ class Hardrules():
     def c_lm_filter(self, left, right):
         if self.lm_filter is None:
             return True
-        return self.lm_filter.score(left, right) < self.lm_threshold
+        return self.lm_filter.score(left, right) >= self.lm_threshold
 
     '''
     def c_different_language(self, left, right, left_lang, right_lang):
