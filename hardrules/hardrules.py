@@ -174,8 +174,8 @@ class Hardrules():
     def c_no_empty(self, sentence, side):
         return sentence != ""
 
-    def c_no_titles(self, sentence, side):
-        return not sentence.istitle()
+    def c_no_titles(self, left, right):
+        return not (left.istitle() and right.istitle())
 
     def c_max_char_length(self, sentence, side):
         return len(sentence) < self.config['max_char_length']
