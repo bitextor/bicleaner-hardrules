@@ -94,8 +94,8 @@ class Hardrules():
 
         # Load FastSpell
         if not args.disable_lang_ident:
-            self.fastspell_src = FastSpell.FastSpell(args.source_lang, mode="cons")
-            self.fastspell_trg = FastSpell.FastSpell(args.target_lang, mode="cons")
+            self.fastspell_src = FastSpell.FastSpell(args.source_lang, mode="aggr")
+            self.fastspell_trg = FastSpell.FastSpell(args.target_lang, mode="aggr")
         else:
             self.fastspell_src = None
             self.fastspell_trg = None
