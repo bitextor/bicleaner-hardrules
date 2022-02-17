@@ -237,7 +237,7 @@ class Hardrules():
     #    return len(regex_breadcrumbs.findall(sentence)) < 3
 
     def c_no_breadcrumbs1(self, sentence, side):
-        return len(regex_breadcrumbs1.findall(sentence)) < 333
+        return len(regex_breadcrumbs1.findall(sentence)) < 3
 
     def c_no_breadcrumbs2(self, sentence, side):
         return len(regex_breadcrumbs2.findall(sentence)) < 2
