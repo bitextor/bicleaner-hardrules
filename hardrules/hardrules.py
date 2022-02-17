@@ -43,27 +43,23 @@ class Hardrules():
     # the order of execution will be the order of the dict
     rule_pipeline = OrderedDict()
     rule_pipeline['no_empty'] = True
-    rule_pipeline['max_char_length'] = 1024
-    rule_pipeline['min_word_length'] = 3
-    rule_pipeline['length'] = True
-    rule_pipeline['length_bytes'] = True
-    rule_pipeline['identical_alpha'] = True
-    rule_pipeline['no_literals'] = ["Re:","{{", "%s", "}}"]
-    rule_pipeline['majority_alpha'] = True
+    rule_pipeline['not_too_long'] = 1024
+    rule_pipeline['not_too_short'] = 3
+    rule_pipeline['length_ratio'] = 2.0
+    rule_pipeline['no_identical'] = True
+    rule_pipeline['no_literals'] = ["Re:","{{", "%s", "}}", "+++", "***", '=\"']
+    rule_pipeline['no_only_numbers'] = True
     rule_pipeline['no_urls'] = True
-    rule_pipeline['no_breadcrumbs1'] = True
-    rule_pipeline['no_breadcrumbs2'] = True
+    rule_pipeline['no_breadcrumbs'] = True
     rule_pipeline['no_glued_words'] = True
     rule_pipeline['no_repeated_words'] = True
-    rule_pipeline['no_noise'] = True
+    rule_pipeline['no_unicode_noise'] = True
     rule_pipeline['no_space_noise'] = True
     rule_pipeline['no_paren'] = True
-    rule_pipeline['unwanted'] = True
-    rule_pipeline['inconditional'] = True
     rule_pipeline['no_escaped_unicode'] = True
     rule_pipeline['no_bad_encoding'] = True
     rule_pipeline['no_titles'] = True
-    rule_pipeline['wrong_language'] = True
+    rule_pipeline['no_wrong_language'] = True
     rule_pipeline['no_porn'] = 'sl'
     rule_pipeline['lm_filter'] = True
 
@@ -177,27 +173,26 @@ class Hardrules():
     def c_no_titles(self, left, right):
         return not (left.istitle() and right.istitle())
 
-    def c_max_char_length(self, sentence, side):
-        return len(sentence) < self.config['max_char_length']
+    def c_not_too_long(self, sentence, side):
+        return len(sentence) < self.config['not_too_long']
 
-    def c_min_word_length(self, sentence, side):
+    def c_not_too_short(self, sentence, side):
         if self.disable_minimal_length:
             return True
         """ Counts number of whitespace, requires >= 2 (3 words) """
-        return len(regex_blank.findall(sentence)) >= self.config['min_word_length']-1
+        return len(regex_blank.findall(sentence)) >= self.config['not_too_short']-1
 
-    def c_identical_alpha(self, left, right):
+    def c_no_identical(self, left, right):
         left = left.translate(tbl_non_alpha)
         right = right.translate(tbl_non_alpha)
         return left.casefold() != right.casefold()
 
-    def c_length(self, left, right):
-        return 0.5 <= float(len(left))/float(len(right)) <= 2.0
+    def c_length_ratio(self, left, right):
+        lower_ratio = 1/self.config["length_ratio"]
+        upper_ratio = self.config["length_ratio"]
+        return lower_ratio <= float(len(left.encode("utf8")))/float(len(right.encode("utf8"))) <= upper_ratio
 
-    def c_length_bytes(self, left, right):
-        return 0.5 <= float(len(left.encode("utf8")))/float(len(right.encode("utf8"))) <= 2.0
-
-    def c_wrong_language(self, sentence, side='left'):
+    def c_no_wrong_language(self, sentence, side='left'):
         if self.fastspell_src is None:
             return True
 
@@ -227,22 +222,17 @@ class Hardrules():
     def c_alpha(self, sentence, side):
         return len(regex_alpha.findall(sentence)) > 0
 
-    def c_majority_alpha(self, sentence, side):
+    def c_no_only_numbers(self, sentence, side):
         return float(len(regex_alpha.findall(sentence))) / float(len(sentence)) >= 0.5
 
     def c_no_urls(self, sentence, side):
         return sum([len("".join(i)) for i in regex_url.findall(sentence)]) < 15
 
-    #def c_no_breadcrumbs(self, sentence, side):
-    #    return len(regex_breadcrumbs.findall(sentence)) < 3
+    def c_no_breadcrumbs(self, sentence, side):
+        return len(regex_breadcrumbs1.findall(sentence)) < 3 \
+                or len(regex_breadcrumbs2.findall(sentence)) < 2
 
-    def c_no_breadcrumbs1(self, sentence, side):
-        return len(regex_breadcrumbs1.findall(sentence)) < 3
-
-    def c_no_breadcrumbs2(self, sentence, side):
-        return len(regex_breadcrumbs2.findall(sentence)) < 2
-
-    def c_no_noise(self, sentence, side):
+    def c_no_unicode_noise(self, sentence, side):
         return len(regex_unicode_noise.findall(sentence)) == 0
 
     def c_no_space_noise(self, sentence, side):
@@ -250,12 +240,6 @@ class Hardrules():
 
     def c_no_paren(self, sentence, side):
         return len(regex_paren.findall(sentence)) < 10
-
-    def c_unwanted(self, sentence, side):
-        return len(regex_unwanted.findall(sentence)) < 5
-
-    def c_inconditional(self, sentence, side):
-        return len(regex_inconditional.findall(sentence)) < 1
 
     def c_no_literals(self, sentence, side):
         return not any(l in sentence for l in self.config["no_literals"])
