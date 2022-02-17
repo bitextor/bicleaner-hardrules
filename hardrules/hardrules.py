@@ -109,14 +109,14 @@ class Hardrules():
 
         # Create dict with with config
         self.config = deepcopy(self.rule_pipeline)
-        if args.config is not None:
+        if args.rules_config is not None:
             # Validate config
-            dif = args.config.keys() - self.rule_pipeline.keys()
+            dif = args.rules_config.keys() - self.rule_pipeline.keys()
             if dif:
                 raise Exception(f"Unkown options in config: {dif}")
 
             # Overwrite with user-defined options
-            for name, param in args.config.items():
+            for name, param in args.rules_config.items():
                 self.config[name] = param
 
         # Check that all the rule functions are implemented

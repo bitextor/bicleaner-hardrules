@@ -45,7 +45,7 @@ def initialization():
     #groupM.add_argument("-t", "--target_lang", type=str, required=True, help="Target language (TL) of the input")
 
     groupO = parser.add_argument_group('Optional')
-    groupO.add_argument('-c', '--config', type=argparse.FileType('r'), default=None, help="Rules configuration file")
+    groupO.add_argument('-c', '--rules_config', type=argparse.FileType('r'), default=None, help="Rules configuration file")
     groupO.add_argument('--tmp_dir', default=gettempdir(), help="Temporary directory where creating the temporary files of this program")
     groupO.add_argument('-b', '--block_size', type=int, default=10000, help="Sentence pairs per block")
     groupO.add_argument('-p', '--processes', type=int, default=max(1, cpu_count()-1), help="Number of processes to use")
@@ -152,8 +152,10 @@ def initialization():
                 sys.exit(1)
 
     # Load rules config
-    if args.config:
-        args.config = yaml.safe_load(args.config)
+    if args.rules_config:
+        yaml_file = args.rules_config
+        args.rules_config = yaml.safe_load(args.rules_config)
+        yaml_file.close()
 
     if args.disable_lm_filter:
         logging.info("LM filtering disabled.")
