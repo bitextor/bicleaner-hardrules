@@ -1,4 +1,4 @@
-Bicleaner Hard-rules 1.4:
+Bicleaner Hard-rules 2.0:
 * Parametrized hardrules: now each rule can be enabled or disabled via YAML config file.
 * Run all mode: run all rules instead of stopping in the first discard.
 * New hardrule: discard sentences that contain repeated words
