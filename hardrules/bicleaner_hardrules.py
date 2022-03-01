@@ -28,7 +28,7 @@ __version__ = "Version 1.0 # 24/05/2021 # Separate hardrules package from Biclea
 __version__ = "Version 1.1 # 26/05/2021 # Load lm only when necessary # Jaume Zaragoza"
 __version__ = "Version 1.3 # 05/07/2021 # FastSpell, bad encoding Ä, check identical with alphabetic and discard empty sides # Jaume Zaragoza"
 __version__ = "Version 1.3.1 # 12/07/2021 # Fix PyPi release # Jaume Zaragoza"
-__version__ = "Version 2.0 # 08/02/2022 # Parametrized rules and run all mode # Jaume Zaragoza"
+__version__ = "Version 2.0 # 01/03/2022 # Parametrized rules and run all mode # Jaume Zaragoza"
 
 logging_level = 0
 
