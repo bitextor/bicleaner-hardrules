@@ -182,14 +182,14 @@ class Hardrules():
         lang = self.src_lang
         if side == "tl":
             lang = self.trg_lang
-        
+
         if self.disable_minimal_length:
             return True
-            
+
         # for Chinese, Japanese and Korean characters rather than words are used
         if lang in CJK:
             return len(sentence) >= self.config['not_too_short']
-            
+
         """ Counts number of whitespace, requires >= 2 (3 words) """
         return len(regex_blank.findall(sentence)) >= self.config['not_too_short']-1
 
@@ -265,14 +265,19 @@ class Hardrules():
         lang = self.src_lang
         if side == "tl":
             lang = self.trg_lang
-            
+
         our_regex = regex_repeated_without_words
         if lang in safe_noise_detection_langs:
             our_regex = regex_repeated_words
-            
+
+        min_chars = 7
+        if lang in CJK:
+            min_chars = 4
+
         for match_obj in regex.finditer(our_regex, sentence):
             matching = match_obj.group().strip()
-            if len(matching) > 7:
+            # if match does not have a minimum length continue without discarding
+            if len(matching) > min_chars:
                 r2 = regex.search("[[:alpha:]]", matching)
                 if r2:
                     return False
