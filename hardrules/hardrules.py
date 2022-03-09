@@ -188,7 +188,7 @@ class Hardrules():
             
         # for Chinese, Japanese and Korean characters rather than words are used
         if lang in CJK:
-            return len(sentence) < self.config['not_too_short']
+            return len(sentence) >= self.config['not_too_short']
             
         """ Counts number of whitespace, requires >= 2 (3 words) """
         return len(regex_blank.findall(sentence)) >= self.config['not_too_short']-1
