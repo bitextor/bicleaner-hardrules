@@ -30,13 +30,15 @@ regex_inconditional = regex.compile("=\"")
 regex_escaped_unicode = regex.compile("[\\\\]u[0-9a-fA-F]{3,}")
 #regex_glued_words = regex.compile("\b[[:alpha:]]*[[:lower:]][[:upper:]][[:alpha:]]*)
 regex_glued_words = regex.compile("([[:alpha:]]*[[:upper:]]{1}[[:lower:]]+){3}")
-regex_repeated_words = regex.compile(r"\b([^\W\d]+)\s+\1\s+\1\b")
-safe_noise_detection_langs = {"en", "es", "fr", "pl", "de", "it", "pt", "nl", "cs", "ro", "fi", "lv", "et", "bg", "hr", "da", "hu", "ga", "eu", "gl", "sl", "sv", "mt", "sk"}
+regex_repeated_words = regex.compile(r"\b(.+)\\1\b")
+regex_repeated_without_words = regex.compile(r"(.+)\\1")
 
 safe_noise_detection_langs = {"en", "es", "fr", "pl", "de", "it", "pt", "nl", "cs", "ro", "fi", "lv", "et", "bg", "hr", "da", "hu", "ga", "eu", "gl", "sl", "sv", "mt", "sk", "is", "lt", "nb", "nn", "no"}
+
 #similar_pairs = [{"es","ca"}, {"es","gl"}, {"pt","gl"}, {"no","nn"}, {"no", "da"}]
 atilde_langs = {"pt"}
 acumflex_langs = {"cy", "fr", "fa", "it", "pt", "tr", "vi",}
+CJK = {"zh", "ja", "ko"}
 
 class Hardrules():
     # Define default settings
@@ -177,8 +179,17 @@ class Hardrules():
         return len(sentence) < self.config['not_too_long']
 
     def c_not_too_short(self, sentence, side):
+        lang = self.src_lang
+        if side == "tl":
+            lang = self.trg_lang
+        
         if self.disable_minimal_length:
             return True
+            
+        # for Chinese, Japanese and Korean characters rather than words are used
+        if lang in CJK:
+            return len(sentence) < self.config['not_too_short']
+            
         """ Counts number of whitespace, requires >= 2 (3 words) """
         return len(regex_blank.findall(sentence)) >= self.config['not_too_short']-1
 
@@ -251,7 +262,22 @@ class Hardrules():
         return regex_glued_words.search(sentence) == None
 
     def c_no_repeated_words(self, sentence, side):
-        return regex_repeated_words.search(sentence) == None
+        lang = self.src_lang
+        if side == "tl":
+            lang = self.trg_lang
+            
+        our_regex = regex_repeated_without_words
+        if lang in safe_noise_detection_langs:
+            our_regex = regex_repeated_words
+            
+        for match_obj in regex.finditer(our_regex, sentence):
+            matching = match_obj.group().strip()
+            if len(matching) > 7:
+                r2 = regex.search("[[:alpha:]]", matching)
+                if r2:
+                    return False
+
+        return True
 
     def c_no_porn(self, left, right):
         if self.porn_removal is None:
