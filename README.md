@@ -163,7 +163,7 @@ no_paren	Too many parenthesis or brackets in sentence
 no_escaped_unicode	There is unescaped unicode characters in sentence
 no_bad_encoding(["Â","Ã"])	Source sentence or target sentence contains mojibake
 no_titles	All words in source sentence or target sentence are uppercased or in titlecase
-wrong_language	Sentence is not in the desired language
+no_wrong_language	Sentence is not in the desired language
 no_porn	Source sentence or target sentence contains text identified as porn
 lm_filter	The sentence pair has low fluency score from the language model
 ```
