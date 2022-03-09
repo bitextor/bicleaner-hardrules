@@ -180,7 +180,7 @@ class Hardrules():
 
     def c_not_too_short(self, sentence, side):
         lang = self.src_lang
-        if side == "tl":
+        if side == "right":
             lang = self.trg_lang
 
         if self.disable_minimal_length:
@@ -263,7 +263,7 @@ class Hardrules():
 
     def c_no_repeated_words(self, sentence, side):
         lang = self.src_lang
-        if side == "tl":
+        if side == "right":
             lang = self.trg_lang
 
         our_regex = regex_repeated_without_words
