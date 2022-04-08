@@ -157,7 +157,7 @@ no_urls	There are URLs
 no_breadcrumbs	There are more than 2 breadcrumb characters in the sentence
 no_glued_words	There are words in the sentence containing too many uppercased characters between lowercased characters
 no_repeated_words There are words repeated consecutively
-no_noise	Too many characters from unwanted unicode in source sentence
+no_unicode_noise	Too many characters from unwanted unicode in source sentence
 no_space_noise	Too many consecutive spaces in sentence
 no_paren	Too many parenthesis or brackets in sentence
 no_escaped_unicode	There is unescaped unicode characters in sentence
