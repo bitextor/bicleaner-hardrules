@@ -18,6 +18,7 @@ tbl_non_alpha = [chr(i) for i in range(sys.maxunicode) if not cat(chr(i)).starts
 tbl_non_alpha = str.maketrans('', '', ''.join(tbl_non_alpha))
 regex_blank = regex.compile("[ \u00A0]")
 regex_alpha = regex.compile("[[:alpha:]]")
+regex_numbers = regex.compile("[[:digit:]]")
 regex_url = regex.compile('((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]|\((:?[^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?\xab\xbb\u201c\u201d\u2018\u2019]))')
 #regex_breadcrumbs = regex.compile("([ ][-/»][ ]|[|<>→←]|[ ][:][:][ ])")
 regex_breadcrumbs1 = regex.compile("([ ][-/][ ]|[<>*]|[ ][:][ ])")
@@ -234,7 +235,11 @@ class Hardrules():
         return len(regex_alpha.findall(sentence)) > 0
 
     def c_no_only_numbers(self, sentence, side):
-        return float(len(regex_alpha.findall(sentence))) / float(len(sentence)) >= 0.5
+        lang = self.src_lang if side == 'left' else self.trg_lang
+        threshold = 0.5
+        if lang in CJK:
+            threshold = 0.7
+        return len(regex_numbers.findall(sentence)) / len(sentence) < threshold
 
     def c_no_urls(self, sentence, side):
         return sum([len("".join(i)) for i in regex_url.findall(sentence)]) < 15
