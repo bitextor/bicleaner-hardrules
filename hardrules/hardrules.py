@@ -78,14 +78,18 @@ class Hardrules():
 
         # Load porn removal
         if not args.disable_porn_removal:
-            self.porn_removal_side = args.metadata_yaml['porn_removal_side']
-            self.porn_removal = args.porn_removal
-            if self.porn_removal_side == 'tl':
-                self.porn_tokenizer = Tokenizer(args.target_tokenizer_command,
-                                                args.target_lang)
-            else:
-                self.porn_tokenizer = Tokenizer(args.source_tokenizer_command,
-                                                args.source_lang)
+            try:
+                self.porn_removal_side = args.metadata_yaml['porn_removal_side']
+                self.porn_removal = args.porn_removal
+                if self.porn_removal_side == 'tl':
+                    self.porn_tokenizer = Tokenizer(args.target_tokenizer_command, args.target_lang)
+                else:
+                    self.porn_tokenizer = Tokenizer(args.source_tokenizer_command, args.source_lang)                
+            except KeyError:
+                self.porn_removal = None
+                self.porn_tokenizer = None
+                self.porn_removal_side = None
+                    
         else:
             self.porn_removal = None
             self.porn_tokenizer = None
