@@ -63,7 +63,7 @@ class Hardrules():
     rule_pipeline['no_bad_encoding'] = True
     rule_pipeline['no_titles'] = True
     rule_pipeline['no_wrong_language'] = True
-    rule_pipeline['no_porn'] = 'sl'
+    rule_pipeline['no_porn'] = True
     rule_pipeline['lm_filter'] = True
 
     def __init__(self, args):
@@ -296,7 +296,7 @@ class Hardrules():
     def c_no_porn(self, left, right):
         if self.porn_removal is None:
             return True
-
+    
         if self.porn_removal_side == "sl":
             tok = self.porn_tokenizer.tokenize(left.lower())
         elif self.porn_removal_side == "tl":
