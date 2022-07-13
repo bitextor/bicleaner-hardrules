@@ -165,6 +165,8 @@ no_bad_encoding	Source sentence or target sentence contains mojibake
 no_titles	All words in source sentence or target sentence are uppercased or in titlecase
 no_wrong_language	Sentence is not in the desired language
 no_porn	Source sentence or target sentence contains text identified as porn
+no_number_inconsistencies	Sentence contains different numbers in source and target (this filter is disabled by default)
+no_script_inconsistencies	Sentence source or target contains characters from different script/writing systems (this filter is disabled by default)
 lm_filter	The sentence pair has low fluency score from the language model
 ```
 

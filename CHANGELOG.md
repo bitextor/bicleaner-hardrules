@@ -1,7 +1,7 @@
 Bicleaner Hardrules 2.2:
 * Refinement of minimum length and repeated words for CJK.
-* Filter sentences with inconsistencies in numbers (deactivated by default)
-* Filter sentences with characters in differents scripts/writing systems (deactivated by default)
+* Filter sentences with inconsistencies in numbers (disabled by default)
+* Filter sentences with characters in differents scripts/writing systems (disabled by default)
 
 Bicleaner Hard-rules 2.0:
 * Parametrized hardrules: now each rule can be enabled or disabled via YAML config file.
