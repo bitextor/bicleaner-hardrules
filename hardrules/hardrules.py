@@ -1,11 +1,28 @@
+import sys
 import logging
 import regex
+import re
+import os
 import sys
+
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))+"/hardrules/")
+
+try:
+    import unicodedata2.unicodedata2 as ucd2
+except (SystemError, ImportError):
+    import hardrules.unicodedata2 as ucd2
+
+
+
 from unicodedata import category as cat
 from fastspell import FastSpell
 from collections import OrderedDict
 from inspect import getmembers, signature
 from copy import deepcopy
+
+
 
 try:
     from .lm import load_lm_filter
@@ -62,10 +79,12 @@ class Hardrules():
     rule_pipeline['no_escaped_unicode'] = True
     rule_pipeline['no_bad_encoding'] = True
     rule_pipeline['no_titles'] = True
+    rule_pipeline['no_number_inconsistencies'] = False
+    rule_pipeline['no_script_inconsistencies'] = False
     rule_pipeline['no_wrong_language'] = True
     rule_pipeline['no_porn'] = True
     rule_pipeline['lm_filter'] = True
-
+    
     def __init__(self, args):
         # Load LM
         if not args.disable_lm_filter:
@@ -290,7 +309,6 @@ class Hardrules():
                 r2 = regex.search("[[:alpha:]]", matching)
                 if r2:
                     return False
-
         return True
 
     def c_no_porn(self, left, right):
@@ -305,3 +323,36 @@ class Hardrules():
             raise Exception(f"c_no_porn rule needs 'sl' or 'tl' param, not {self.porn_removal_side}")
 
         return self.porn_removal.predict(self.porn_tokenizer.detokenize(tok))[0][0] == '__label__negative'
+
+
+    def c_no_number_inconsistencies(self, left, right):
+        left_nums =  re.sub('[^0-9]','', left)
+        right_nums = re.sub('[^0-9]','', right)
+        
+        sorted_left_nums = ''.join(sorted(left_nums))
+        sorted_right_nums = ''.join(sorted(right_nums))
+        
+        if sorted_left_nums == sorted_right_nums:
+            return True
+        else:
+            return False
+        
+    def c_no_script_inconsistencies(self, sentence, side):
+        found_script_family = ""
+        
+        for c in sentence:
+            if c.isalpha():
+                family = ucd2.script_family(c)
+                if family == "":
+                    continue            
+                if found_script_family == "":
+                    #first char's script
+                    found_script_family =  family
+                    continue
+                if found_script_family != family:
+                    return False
+                else:
+                    continue
+    
+        return True                
+        
