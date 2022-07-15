@@ -9,7 +9,7 @@ with open("requirements.txt") as rf:
 
 setuptools.setup(
     name="bicleaner-hardrules",
-    version="2.2",
+    version="2.2.1",
     install_requires=requirements,
     license="GNU General Public License v3.0",
     author="Prompsit Language Engineering",
@@ -21,7 +21,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/bitextor/bicleaner-hardrules",
     packages=setuptools.find_packages(),
-    package_data={"hardrules": ["../requirements.txt", "../unicodedata2/*"]},
+    package_data={"hardrules": ["../requirements.txt"]},
     classifiers=[
         "Environment :: Console",
         "Intended Audience :: Science/Research",
