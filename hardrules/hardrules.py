@@ -5,16 +5,10 @@ import re
 import os
 import sys
 
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))+"/hardrules/")
-
 try:
-    import unicodedata2.unicodedata2 as ucd2
+    from .hardrules import unicodedata2 as ucd2
 except (SystemError, ImportError):
-    import hardrules.unicodedata2 as ucd2
-
-
+    from hardrules import unicodedata2 as ucd2
 
 from unicodedata import category as cat
 from fastspell import FastSpell
