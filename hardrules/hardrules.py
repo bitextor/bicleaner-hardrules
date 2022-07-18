@@ -191,7 +191,7 @@ class Hardrules():
         return sentence != ""
 
     def c_no_titles(self, left, right):    
-        return not ((len(left.split(" ")) > 1 and left.istitle()) and (len(right.split(" ")) > 1 and right.istitle()))
+        return not ((len(left.strip().split(" ")) > 1 and left.istitle()) and (len(right.strip().split(" ")) > 1 and right.istitle()))
 
     def c_not_too_long(self, sentence, side):
         return len(sentence) < self.config['not_too_long']
