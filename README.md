@@ -152,6 +152,7 @@ not_too_short	Sentence is less than	3 words long
 length_ratio	The length ratio between the source sentence and target sentence (in bytes) is too low or too high
 no_identical	Alphabetic content in source sentence and target sentence is identical
 no_literals  Unwanted literals: "Re:","{{", "%s", "}}", "+++", "***", '=\"'
+no_only_symbols	The ratio of non-alphabetic characters in source sentence is more than 90%
 no_only_numbers	The ratio of numeric characters in source sentence is too high
 no_urls	There are URLs
 no_breadcrumbs	There are more than 2 breadcrumb characters in the sentence

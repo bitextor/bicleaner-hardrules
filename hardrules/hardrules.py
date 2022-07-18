@@ -62,6 +62,7 @@ class Hardrules():
     rule_pipeline['length_ratio'] = 2.0
     rule_pipeline['no_identical'] = True
     rule_pipeline['no_literals'] = ["Re:","{{", "%s", "}}", "+++", "***", '=\"']
+    rule_pipeline['no_only_symbols'] = True
     rule_pipeline['no_only_numbers'] = True
     rule_pipeline['no_urls'] = True
     rule_pipeline['no_breadcrumbs'] = True
@@ -248,8 +249,8 @@ class Hardrules():
             return False
         return True
 
-    def c_alpha(self, sentence, side):
-        return len(regex_alpha.findall(sentence)) > 0
+    def c_no_only_symbols(self, sentence, side):
+        return len(regex_alpha.findall(sentence)) / len(sentence) > 0.1
 
     def c_no_only_numbers(self, sentence, side):
         lang = self.src_lang if side == 'left' else self.trg_lang
