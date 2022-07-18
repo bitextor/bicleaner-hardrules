@@ -122,7 +122,7 @@ class Hardrules():
         self.run_all_rules = args.run_all_rules
         self.disable_minimal_length = args.disable_minimal_length
         self.rules = {n: f for n, f in getmembers(self) if n.startswith('c_')}
-        logging.debug(f"Enabled rules: {self.rules.keys()}")
+        logging.debug(f"Available rules: {self.rules.keys()}")
 
         # Create dict with with config
         self.config = deepcopy(self.rule_pipeline)
@@ -135,6 +135,8 @@ class Hardrules():
             # Overwrite with user-defined options
             for name, param in args.rules_config.items():
                 self.config[name] = param
+
+        logging.debug(f"Enabled rules: {self.config.keys()}")
 
         # Check that all the rule functions are implemented
         for rule_name in self.config.keys():
