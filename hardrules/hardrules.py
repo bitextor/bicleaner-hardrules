@@ -170,10 +170,16 @@ class Hardrules():
                     logging.debug(f"Side: {sidename}")
                     logging.debug(f"Keep: {keep}")
                     if not keep and self.run_all_rules:
-                        discards.append(f"{rule_name}({sidename})")
                         # Especial case for empty rule to avoid crashes in other rules
                         if rule_name == 'no_empty':
+                            #check if both are empty:
+                            if left=="":
+                                discards.append("no_empty(left)")
+                            if right=="":
+                                discards.append("no_empty(right)")
                             return discards
+                        else:   
+                            discards.append(f"{rule_name}({sidename})")                            
                     elif not keep:
                         return f"{rule_name}({sidename})"
             else:
