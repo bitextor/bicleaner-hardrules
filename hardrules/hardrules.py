@@ -35,7 +35,7 @@ regex_url = regex.compile('((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}
 regex_breadcrumbs1 = regex.compile("([ ][-/][ ]|[<>*]|[ ][:][ ])")
 regex_breadcrumbs2 = regex.compile("([ ][»][ ]|[|→←•·¬])")
 regex_unicode_noise = regex.compile("[\x80-\xFF]{3,}")
-regex_spaces_noise = regex.compile("([ ].){4,}[ ]")
+regex_spaces_noise = regex.compile("([ ]\D){4,}[ ]")
 regex_paren = regex.compile("[][(){}]")
 regex_unwanted = regex.compile("[+*]")
 regex_inconditional = regex.compile("=\"")
