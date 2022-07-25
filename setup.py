@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from skbuild import setup
 import setuptools
 
 with open("README.md", "r") as fh:
@@ -7,10 +8,9 @@ with open("README.md", "r") as fh:
 with open("requirements.txt") as rf:
     requirements = rf.read().splitlines()
 
-setuptools.setup(
+setup(
     name="bicleaner-hardrules",
     version="2.2.1",
-    install_requires=requirements,
     license="GNU General Public License v3.0",
     author="Prompsit Language Engineering",
     author_email="info@prompsit.com",
@@ -22,6 +22,16 @@ setuptools.setup(
     url="https://github.com/bitextor/bicleaner-hardrules",
     packages=setuptools.find_packages(),
     package_data={"hardrules": ["../requirements.txt"]},
+    install_requires=requirements,
+    setup_requires=[
+        "setuptools",
+        "scikit-build",
+        "ninja",
+    ],
+    cmake_source_dir="./kenlm",
+    cmake_args=[
+        "-DKENLM_MAX_ORDER=7",
+    ],
     classifiers=[
         "Environment :: Console",
         "Intended Audience :: Science/Research",
