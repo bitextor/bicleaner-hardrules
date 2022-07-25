@@ -13,18 +13,13 @@ It is part of [Bicleaner](https://github.com/bitextor/bicleaner).
 Bicleaner hard-rules is written in Python and can be installed using `pip`:
 
 ```bash
-python3.7 -m pip install bicleaner-hardrules
+pip install bicleaner-hardrules
 ```
 
-Bicleaner hard-rules requires the [KenLM](https://github.com/kpu/kenlm) Python bindings with support for 7-gram language models. You can easily install it by running the following commands:
+Bicleaner hard-rules requires the [KenLM](https://github.com/kpu/kenlm) Python bindings with support for 7-gram language models. You can easily install it by running the following command:
 
 ```bash
-git clone https://github.com/kpu/kenlm
-cd kenlm
-python3.7 -m pip install . --install-option="--max_order 7"
-mkdir -p build && cd build
-cmake .. -DKENLM_MAX_ORDER=7 -DCMAKE_INSTALL_PREFIX:PATH=/your/prefix/path
-make -j all install
+pip install https://github.com/kpu/kenlm/archive/master.zip --install-option="--max_order 7"
 ```
 
 Since v1.3 hard-rules uses [FastSpell](https://github.com/mbanon/fastspell) that requires `python-dev` and `libhunspell-dev`:
