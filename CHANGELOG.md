@@ -1,3 +1,6 @@
+Bicleaner Hardrules 2.3:
+* Automated KenLM build.
+
 Bicleaner Hardrules 2.2:
 * Refinement of minimum length and repeated words for CJK.
 * Filter sentences with inconsistencies in numbers (disabled by default)
