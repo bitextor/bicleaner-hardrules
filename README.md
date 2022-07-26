@@ -14,16 +14,12 @@ First you need to install build requirements:
 pip install setuptools cmake scikit-build ninja
 ```
 
-Bicleaner hard-rules is written in Python and can be installed using `pip`:
+Bicleaner hard-rules is written in Python and can be installed using `pip`.
+It also requires the [KenLM](https://github.com/kpu/kenlm) Python bindings with support for 7-gram language models.
+You can easily install it by running the following command:
 
 ```bash
-pip install bicleaner-hardrules
-```
-
-Bicleaner hard-rules requires the [KenLM](https://github.com/kpu/kenlm) Python bindings with support for 7-gram language models. You can easily install it by running the following command:
-
-```bash
-pip install https://github.com/kpu/kenlm/archive/master.zip --install-option="--max_order 7"
+pip install bicleaner-hardrules https://github.com/kpu/kenlm/archive/master.zip --install-option="--max_order 7"
 ```
 
 Since v1.3 hard-rules uses [FastSpell](https://github.com/mbanon/fastspell) that requires `python-dev` and `libhunspell-dev`:
