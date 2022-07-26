@@ -22,9 +22,11 @@ setup(
     url="https://github.com/bitextor/bicleaner-hardrules",
     packages=setuptools.find_packages(),
     package_data={"hardrules": ["../requirements.txt"]},
+    python_requires=">=3.7",
     install_requires=requirements,
     setup_requires=[
         "setuptools",
+        "cmake",
         "scikit-build",
         "ninja",
     ],

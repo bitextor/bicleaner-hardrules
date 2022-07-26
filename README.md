@@ -9,6 +9,10 @@ It is part of [Bicleaner](https://github.com/bitextor/bicleaner).
 
 
 ## Installation & Requirements
+First you need to install build requirements:
+```bash
+pip install setuptools cmake scikit-build ninja
+```
 
 Bicleaner hard-rules is written in Python and can be installed using `pip`:
 
