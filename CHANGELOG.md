@@ -1,5 +1,6 @@
 Bicleaner Hardrules 2.3:
 * Automated KenLM build.
+* Check lenght ratio with characters in non-CJK.
 
 Bicleaner Hardrules 2.2:
 * Refinement of minimum length and repeated words for CJK.

@@ -228,7 +228,10 @@ class Hardrules():
     def c_length_ratio(self, left, right):
         lower_ratio = 1/self.config["length_ratio"]
         upper_ratio = self.config["length_ratio"]
-        return lower_ratio <= float(len(left.encode("utf8")))/float(len(right.encode("utf8"))) <= upper_ratio
+        if self.src_lang in CJK or self.trg_lang in CJK:
+            return lower_ratio <= len(left.encode("utf8"))/len(right.encode("utf8")) <= upper_ratio
+        else:
+            return lower_ratio <= len(left)/len(right) <= upper_ratio
 
     def c_no_wrong_language(self, sentence, side='left'):
         if self.fastspell_src is None:
