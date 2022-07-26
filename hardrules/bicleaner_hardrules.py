@@ -30,6 +30,7 @@ __version__ = "Version 1.3 # 05/07/2021 # FastSpell, bad encoding Ä, check iden
 __version__ = "Version 1.3.1 # 12/07/2021 # Fix PyPi release # Jaume Zaragoza"
 __version__ = "Version 2.0 # 01/03/2022 # Parametrized rules and run all mode # Jaume Zaragoza"
 __version__= "Version 2.2 # 11/0/2022 # Added inconsistencies rules # Marta Bañón"
+__version__= "Version 2.3 # 26/07/2022 # Automated KenLM build # Jaume Zaragoza"
 
 
 logging_level = 0
