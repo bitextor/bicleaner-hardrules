@@ -9,11 +9,6 @@ It is part of [Bicleaner](https://github.com/bitextor/bicleaner).
 
 
 ## Installation & Requirements
-First you need to install build requirements:
-```bash
-pip install setuptools cmake scikit-build ninja
-```
-
 Bicleaner hard-rules is written in Python and can be installed using `pip`.
 It also requires the [KenLM](https://github.com/kpu/kenlm) Python bindings with support for 7-gram language models.
 You can easily install it by running the following command:
@@ -35,9 +30,25 @@ or downloaded from an external source, such as https://github.com/wooorm/diction
 
 You can also provide the path to the Hunspell dictionaries directories by using the dictpath atribute in `{/YOUR/INSTALLATION/PATH}/config/hunspell.yaml` (for example, `venv/lib/python3.7/site-packages/fastspell/config/hunspell.yaml` ) if you are installing from PyPI or with `setup.py`, or in `/config/hunspell.yaml` if you are running directly the code. Default path is `/usr/share/hunspell`.
 
-
 The remaining modules will be automatically downloaded and installed/upgraded (if required) with the first command.
 After installation, a binary file (`bicleaner-hardrules`) will be located in your `python/installation/prefix/bin` directory. This is usually `$HOME/.local/bin` or `/usr/local/bin/`.
+
+
+### Installing from source
+When installing from source, either directly from the cloned repository
+```
+git clone https://github.com/bitextor/bicleaner-hardrules
+cd bicleaner-hardrules
+pip install .
+```
+or from `pip`
+```
+pip install bicleaner-hardrules --no-binary :all:
+```
+you need to install build requirements first:
+```bash
+pip install setuptools cmake scikit-build ninja
+```
 
 ## Cleaning
 
