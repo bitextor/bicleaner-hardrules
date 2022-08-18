@@ -37,7 +37,8 @@ regex_breadcrumbs1 = regex.compile("([ ][-/][ ]|[<>*]|[ ][:][ ])")
 regex_breadcrumbs2 = regex.compile("([ ][»][ ]|[|→←•·¬])")
 regex_unicode_noise = regex.compile("[\x80-\xFF]{3,}")
 regex_spaces_noise = regex.compile("([ ]\D){4,}[ ]")
-regex_paren = regex.compile("[][(){}]")
+#regex_paren = regex.compile("[][(){}]")
+regex_paren = r"\[|\]|\(|\)|{|}|⟨|⟩"
 regex_unwanted = regex.compile("[+*]")
 regex_inconditional = regex.compile("=\"")
 regex_escaped_unicode = regex.compile("[\\\\]u[0-9a-fA-F]{3,}")
@@ -287,7 +288,18 @@ class Hardrules():
         return len(regex_spaces_noise.findall(sentence)) == 0
 
     def c_no_paren(self, sentence, side):
-        return len(regex_paren.findall(sentence)) < 10
+        if len(re.findall(regex_paren, sentence)): #there are parentheses
+            char_count = {i: sentence.count(i) for i in set(sentence)}
+            if (((char_count.get("[") or 0) + (char_count.get("]") or 0)) > 6 ) or (char_count.get("[") or 0) != (char_count.get("]") or 0): #max 6 [ or ], having the same [ and ] 
+                return False
+            if (((char_count.get("{") or 0) + (char_count.get("}") or 0)) > 6 ) or (char_count.get("{") or 0) != (char_count.get("}") or 0): #max than 6 { or }, having the same { and }
+                return False
+            if (((char_count.get("⟨") or 0) + (char_count.get("⟩") or 0)) > 6 ) or (char_count.get("⟨") or 0) != (char_count.get("⟩") or 0): #max than 6 ⟨ or ⟩, having the same ⟨ and ⟩            
+                return False
+            if (char_count.get("(") or 0) != (char_count.get(")") or 0): #any amount of  () is allowed, as long as there are the same amount of  ( and )
+                return False
+        return True    
+
 
     def c_no_literals(self, sentence, side):
         return not any(l in sentence for l in self.config["no_literals"])
