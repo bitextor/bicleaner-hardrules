@@ -41,7 +41,7 @@ regex_spaces_noise = regex.compile("([ ]\D){4,}[ ]")
 regex_paren = r"\[|\]|\(|\)|{|}|⟨|⟩"
 regex_unwanted = regex.compile("[+*]")
 regex_inconditional = regex.compile("=\"")
-regex_escaped_unicode = regex.compile("[\\\\]u[0-9a-fA-F]{3,}")
+regex_escaped_unicode = regex.compile("[\\\\][xu][0-9a-fA-F]{2,}") #matches stuff like \\u245 and \\xc3
 #regex_glued_words = regex.compile("\b[[:alpha:]]*[[:lower:]][[:upper:]][[:alpha:]]*)
 regex_glued_words = regex.compile("([[:alpha:]]*[[:upper:]]{1}[[:lower:]]+){3}")
 regex_repeated_words = regex.compile(r"\b(.+)\1\b")
