@@ -234,7 +234,7 @@ def worker_process(i, jobs_queue, output_queue, args):
                         wrong_tu_results = hardrules.wrong_tu(left, right)
                     else:
                         logging.error("scol ({}) or tcol ({}) indexes above column number ({})".format(args.scol, args.tcol, len(parts)))
-                        wrong_tu_results = "c_wrong_cols"
+                        wrong_tu_results = ["c_wrong_cols"]
 
                     # Print input sentences when scoring_only is disabled
                     if not args.score_only:
