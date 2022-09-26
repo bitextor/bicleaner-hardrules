@@ -287,17 +287,32 @@ class Hardrules():
     def c_no_space_noise(self, sentence, side):
         return len(regex_spaces_noise.findall(sentence)) == 0
 
-    def c_no_paren(self, sentence, side):
-        if len(re.findall(regex_paren, sentence)): #there are parentheses
-            char_count = {i: sentence.count(i) for i in set(sentence)}
-            if (((char_count.get("[") or 0) + (char_count.get("]") or 0)) > 6 ) or (char_count.get("[") or 0) != (char_count.get("]") or 0): #max 6 [ or ], having the same [ and ] 
+    def c_no_paren(self,left, right):
+        if len(re.findall(regex_paren, left)) or len(re.findall(regex_paren, right)): #there are parentheses
+            l_char_count = {i: left.count(i) for i in set(left)}
+            r_char_count = {i: right.count(i) for i in set(right)}
+            if (((l_char_count.get("[") or 0) + (l_char_count.get("]") or 0)) > 6 ) or (l_char_count.get("[") or 0) != (l_char_count.get("]") or 0): #max 6 [ or ], having the same [ and ] 
                 return False
-            if (((char_count.get("{") or 0) + (char_count.get("}") or 0)) > 6 ) or (char_count.get("{") or 0) != (char_count.get("}") or 0): #max than 6 { or }, having the same { and }
+            if (((r_char_count.get("[") or 0) + (r_char_count.get("]") or 0)) > 6 ) or (r_char_count.get("[") or 0) != (r_char_count.get("]") or 0): #max 6 [ or ], having the same [ and ] 
+                return False                
+            if (((l_char_count.get("{") or 0) + (l_char_count.get("}") or 0)) > 6 ) or (l_char_count.get("{") or 0) != (l_char_count.get("}") or 0): #max than 6 { or }, having the same { and }
                 return False
-            if (((char_count.get("⟨") or 0) + (char_count.get("⟩") or 0)) > 6 ) or (char_count.get("⟨") or 0) != (char_count.get("⟩") or 0): #max than 6 ⟨ or ⟩, having the same ⟨ and ⟩            
+            if (((r_char_count.get("{") or 0) + (r_char_count.get("}") or 0)) > 6 ) or (r_char_count.get("{") or 0) != (r_char_count.get("}") or 0): #max than 6 { or }, having the same { and }
+                return False                
+            if (((l_char_count.get("⟨") or 0) + (l_char_count.get("⟩") or 0)) > 6 ) or (l_char_count.get("⟨") or 0) != (l_char_count.get("⟩") or 0): #max than 6 ⟨ or ⟩, having the same ⟨ and ⟩            
                 return False
-            if (char_count.get("(") or 0) != (char_count.get(")") or 0): #any amount of  () is allowed, as long as there are the same amount of  ( and )
-                return False
+            if (((r_char_count.get("⟨") or 0) + (r_char_count.get("⟩") or 0)) > 6 ) or (r_char_count.get("⟨") or 0) != (r_char_count.get("⟩") or 0): #max than 6 ⟨ or ⟩, having the same ⟨ and ⟩            
+                return False                
+            l_opening_paren = l_char_count.get("(") or 0
+            r_opening_paren = r_char_count.get("(") or 0
+            l_closing_paren = l_char_count.get(")") or 0
+            r_closing_paren = r_char_count.get(")") or 0
+            if (l_opening_paren == l_closing_paren) and (r_opening_paren == r_closing_paren): #any amount of  () is allowed, as long as there are the same amount of  ( and )
+                return True
+            elif l_closing_paren == r_closing_paren:     #if not the same amount, the closing ) must match in source and target, to allow  sentences as a)..., b)..., etc
+                return True
+            else:
+                return False                
         return True    
 
 
