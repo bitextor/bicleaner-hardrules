@@ -1,8 +1,8 @@
 regex
 PyYAML
 pytest
-toolwrapper
+toolwrapper<=3
 joblib
-sacremoses
+sacremoses<=0.0.53
 fasttext
-fastspell
+fastspell==0.4

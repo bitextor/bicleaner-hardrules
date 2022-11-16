@@ -96,7 +96,7 @@ def initialization():
     if not args.disable_lang_ident:
         # Load a FastSpell objet to trigger download of fasttext langid
         # before running hardrules
-        fsobj = FastSpell.FastSpell("en", mode="cons")
+        fsobj = FastSpell("en", mode="aggr")
 
     #Try loading metadata for LM filtering and porn removal
     if not (args.disable_lm_filter and args.disable_porn_removal) and args.metadata != None:
