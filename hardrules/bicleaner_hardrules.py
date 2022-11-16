@@ -23,6 +23,9 @@ except (SystemError, ImportError):
     from util import logging_setup, check_positive, check_positive_between_zero_and_one
     from hardrules import Hardrules
 
+# Remove fasttext warning
+fasttext.FastText.eprint = lambda x: None
+
 __author__ = "Sergio Ortiz Rojas"
 __version__ = "Version 1.0 # 24/05/2021 # Separate hardrules package from Bicleaner # Jaume Zaragoza"
 __version__ = "Version 1.1 # 26/05/2021 # Load lm only when necessary # Jaume Zaragoza"

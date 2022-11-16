@@ -16,10 +16,6 @@ from collections import OrderedDict
 from inspect import getmembers, signature
 from copy import deepcopy
 
-
-# Remove fasttext warning
-fasttext.FastText.eprint = lambda x: None
-
 try:
     from .lm import load_lm_filter
     from .tokenizer import Tokenizer
