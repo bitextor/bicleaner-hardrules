@@ -156,7 +156,6 @@ class Hardrules():
         for rule_name in self.config.keys():
             if not self.config[rule_name]:
                 continue
-            logging.debug(f"Rule: {rule_name}")
 
             # Obtain function to be applied
             rule_func = self.rules['c_' + rule_name]
@@ -167,8 +166,7 @@ class Hardrules():
                 # Iterate over left and right side
                 for sidename, side in {'left': left, 'right': right}.items():
                     keep = rule_func(side, sidename)
-                    logging.debug(f"Side: {sidename}")
-                    logging.debug(f"Keep: {keep}")
+                    logging.debug(f"Rule '{rule_name}({sidename})': {not keep}")
                     if not keep and self.run_all_rules:
                         # Especial case for empty rule to avoid crashes in other rules
                         if rule_name == 'no_empty':
@@ -185,7 +183,7 @@ class Hardrules():
             else:
                 # Apply rule to both sides
                 keep = rule_func(left, right)
-                logging.debug(f"Keep: {keep}")
+                logging.debug(f"Rule '{rule_name}(left,right)': {not keep}")
                 if not keep and self.run_all_rules:
                     discards.append(f"{rule_name}(left,right)")
                 elif not keep:
