@@ -1,4 +1,7 @@
 Bicleaner Hardrules 2.4:
+* Disable `no_urls` by default.
+
+Bicleaner Hardrules 2.4:
 * Update FastSpell
 * Fix FastSpell imports.
 * Improved `no_paren` rule.
