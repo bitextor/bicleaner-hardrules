@@ -29,7 +29,7 @@ regex_blank = regex.compile("[ \u00A0]")
 regex_alpha = regex.compile("[[:alpha:]]")
 regex_numbers = regex.compile("[[:digit:]]")
 #regex_url = regex.compile('((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]|\((:?[^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?\xab\xbb\u201c\u201d\u2018\u2019]))')
-regex_url = r"(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)"
+regex_url = regex.compile("(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)")
 #regex_breadcrumbs = regex.compile("([ ][-/»][ ]|[|<>→←]|[ ][:][:][ ])")
 regex_breadcrumbs1 = regex.compile("([ ][-/][ ]|[<>*]|[ ][:][ ])")
 regex_breadcrumbs2 = regex.compile("([ ][»][ ]|[|→←•·¬])")
@@ -64,7 +64,7 @@ class Hardrules():
     rule_pipeline['no_literals'] = ["Re:","{{", "%s", "}}", "+++", "***", '=\"']
     rule_pipeline['no_only_symbols'] = True
     rule_pipeline['no_only_numbers'] = True
-    rule_pipeline['no_urls'] = True
+    rule_pipeline['no_urls'] = False
     rule_pipeline['no_breadcrumbs'] = True
     rule_pipeline['no_glued_words'] = True
     rule_pipeline['no_repeated_words'] = True
@@ -270,7 +270,7 @@ class Hardrules():
 
     def c_no_urls(self, sentence, side):
         #return sum([len("".join(i)) for i in regex_url.findall(sentence)]) < 15
-        return  len(re.findall(regex_url, sentence) )== 0
+        return  len(regex_url.findall(sentence) )== 0
 
 
     def c_no_breadcrumbs(self, sentence, side):

@@ -160,7 +160,7 @@ no_identical	Alphabetic content in source sentence and target sentence is identi
 no_literals  Unwanted literals: "Re:","{{", "%s", "}}", "+++", "***", '=\"'
 no_only_symbols	The ratio of non-alphabetic characters in source sentence is more than 90%
 no_only_numbers	The ratio of numeric characters in source sentence is too high
-no_urls	There are URLs
+no_urls	There are URLs (disabled by default)
 no_breadcrumbs	There are more than 2 breadcrumb characters in the sentence
 no_glued_words	There are words in the sentence containing too many uppercased characters between lowercased characters
 no_repeated_words There are words repeated consecutively
@@ -172,8 +172,8 @@ no_bad_encoding	Source sentence or target sentence contains mojibake
 no_titles	All words in source sentence or target sentence are uppercased or in titlecase
 no_wrong_language	Sentence is not in the desired language
 no_porn	Source sentence or target sentence contains text identified as porn
-no_number_inconsistencies	Sentence contains different numbers in source and target (this filter is disabled by default)
-no_script_inconsistencies	Sentence source or target contains characters from different script/writing systems (this filter is disabled by default)
+no_number_inconsistencies	Sentence contains different numbers in source and target (disabled by default)
+no_script_inconsistencies	Sentence source or target contains characters from different script/writing systems (disabled by default)
 lm_filter	The sentence pair has low fluency score from the language model
 ```
 
