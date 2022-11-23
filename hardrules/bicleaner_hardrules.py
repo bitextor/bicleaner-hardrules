@@ -35,6 +35,7 @@ __version__ = "Version 2.0 # 01/03/2022 # Parametrized rules and run all mode # 
 __version__ = "Version 2.2 # 11/0/2022 # Added inconsistencies rules # Marta Bañón"
 __version__ = "Version 2.3 # 26/07/2022 # Automated KenLM build # Jaume Zaragoza"
 __version__ = "Version 2.4 # 16/11/2022 # Minor fixes and updates # Jaume Zaragoza"
+__version__ = "Version 2.5 # 23/11/2022 # Jaume Zaragoza"
 
 
 logging_level = 0
