@@ -1,4 +1,4 @@
-Bicleaner Hardrules 2.4:
+Bicleaner Hardrules 2.5:
 * Disable `no_urls` by default.
 
 Bicleaner Hardrules 2.4:
