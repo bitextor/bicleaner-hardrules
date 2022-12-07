@@ -5,11 +5,6 @@ import re
 import os
 import sys
 
-try:
-    from .hardrules import unicodedata2 as ucd2
-except (SystemError, ImportError):
-    from hardrules import unicodedata2 as ucd2
-
 from unicodedata import category as cat
 from fastspell import FastSpell
 from collections import OrderedDict
@@ -19,9 +14,11 @@ from copy import deepcopy
 try:
     from .lm import load_lm_filter
     from .tokenizer import Tokenizer
+    from .writing_scripts import script_family
 except (SystemError, ImportError):
     from lm import load_lm_filter
-    from tokenizer import Tokenizer 
+    from tokenizer import Tokenizer
+    from writing_scripts import script_family
 
 tbl_non_alpha = [chr(i) for i in range(sys.maxunicode) if not cat(chr(i)).startswith('L')]
 tbl_non_alpha = str.maketrans('', '', ''.join(tbl_non_alpha))
@@ -374,7 +371,7 @@ class Hardrules():
         
         for c in sentence:
             if c.isalpha():
-                family = ucd2.script_family(c)
+                family = script_family(c)
                 if family == "":
                     continue            
                 if found_script_family == "":

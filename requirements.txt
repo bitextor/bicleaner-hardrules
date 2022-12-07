@@ -1,8 +1,0 @@
-regex
-PyYAML
-pytest
-toolwrapper<=3
-joblib
-sacremoses<=0.0.53
-fasttext
-fastspell==0.4

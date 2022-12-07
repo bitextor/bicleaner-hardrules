@@ -1,0 +1,51 @@
+[project]
+name = "bicleaner-hardrules"
+version = "2.5"
+authors = [
+    { name="Prompsit Language Engineering", email="info@prompsit.com" },
+]
+maintainers = [
+    { name="Jaume Zaragoza", email="jzaragoza@prompsit.com" },
+]
+description = "Pre-filtering step for obvious noise based on rules, poor language based on general language modelling and vulgar language based on specific language modelling"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "regex",
+    "PyYAML",
+    "pytest",
+    "toolwrapper<=3",
+    "joblib",
+    "sacremoses<=0.0.53",
+    "fasttext",
+    "fastspell==0.4",
+]
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Text Processing :: Linguistic",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Filters"
+]
+
+[build-system]
+requires = [
+    "setuptools>=45.0,<66",
+    "cmake>=3.18",
+    "scikit-build==0.16.3",
+    "ninja"
+]
+
+[project.scripts]
+bicleaner-hardrules = "hardrules.bicleaner_hardrules:main"
+
+[project.urls]
+"HomePage" = "https://github.com/bitextor/bicleaner-hardrules"
+"Prompsit Language Engineering" =  "http://www.prompsit.com"
+"Paracrawl" = "https://paracrawl.eu/"

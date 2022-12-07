@@ -365,7 +365,10 @@ def perform_hardrules_filtering(args):
 
     return errors
 
-def main(args):
+def main():
+    logging_setup()
+    args = initialization()
+
     logging.info("Executing main program...")
     errors = perform_hardrules_filtering(args)
     if errors:
@@ -375,11 +378,4 @@ def main(args):
         logging.info("Program finished")
 
 if __name__ == '__main__':
-    try: 
-        logging_setup()
-        args = initialization()
-        main(args)
-    except Exception as ex:
-        tb = traceback.format_exc()
-        logging.error(tb)
-        sys.exit(1)
+    main()
