@@ -1,3 +1,7 @@
+Bicleaner Hardrules 2.5.1:
+* Fix installation instructions.
+* Freeze some dependencies.
+
 Bicleaner Hardrules 2.5:
 * Disable `no_urls` by default.
 
