@@ -39,8 +39,9 @@ requires = [
     "setuptools>=45.0,<66",
     "cmake>=3.18",
     "scikit-build==0.16.3",
-    "ninja"
+    "ninja",
 ]
+build-backend = "setuptools.build_meta"
 
 [project.scripts]
 bicleaner-hardrules = "hardrules.bicleaner_hardrules:main"
