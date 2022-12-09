@@ -14,7 +14,8 @@ It also requires the [KenLM](https://github.com/kpu/kenlm) Python bindings with 
 You can easily install it by running the following command:
 
 ```bash
-pip install bicleaner-hardrules https://github.com/kpu/kenlm/archive/master.zip --install-option="--max_order 7"
+pip install bicleaner-hardrules
+pip install https://github.com/kpu/kenlm/archive/master.zip --install-option="--max_order 7"
 ```
 
 Since v1.3 hard-rules uses [FastSpell](https://github.com/mbanon/fastspell) that requires `python-dev` and `libhunspell-dev`:
