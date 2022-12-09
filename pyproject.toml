@@ -14,10 +14,10 @@ dependencies = [
     "regex",
     "PyYAML",
     "pytest",
-    "toolwrapper<=3",
+    "toolwrapper>=1.0,<=3",
     "joblib",
-    "sacremoses<=0.0.53",
-    "fasttext",
+    "sacremoses==0.0.53",
+    "fasttext==0.9.2",
     "fastspell==0.4",
 ]
 classifiers = [
