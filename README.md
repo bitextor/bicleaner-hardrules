@@ -45,10 +45,6 @@ or from `pip`
 ```
 pip install bicleaner-hardrules --no-binary :all:
 ```
-you need to install build requirements first:
-```bash
-pip install setuptools cmake scikit-build ninja
-```
 
 ## Cleaning
 
