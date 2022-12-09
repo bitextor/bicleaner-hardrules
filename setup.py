@@ -10,7 +10,7 @@ with open("requirements.txt") as rf:
 
 setup(
     name="bicleaner-hardrules",
-    version="2.5",
+    version="2.5.1",
     license="GNU General Public License v3.0",
     author="Prompsit Language Engineering",
     author_email="info@prompsit.com",
