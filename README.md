@@ -224,6 +224,14 @@ If you find Bicleaner useful, please consider citing the following papers:
 }
 ```
 
+## Making a PyPi Release
+In the root dir of the repo, run:
+```bash
+./scripts/release.sh
+```
+This script will create source distribution, compile binary distribution and convert wheel file to generic python3.
+Then it will upload them to PyPi, you need a user account maintainer of `bicleaner-hardrules` in PyPi and user token.
+
 ___
 
 ![Connecting Europe Facility](https://www.paracrawl.eu/images/logo_en_cef273x39.png)
