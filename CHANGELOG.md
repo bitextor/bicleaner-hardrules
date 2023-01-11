@@ -1,4 +1,7 @@
 Bicleaner Hardrules 2.5.1:
+* Update FastSpell to 0.5: some improvements for Slovene and Serbo-Croatian language detection.
+
+Bicleaner Hardrules 2.5.1:
 * Fix installation instructions.
 * Freeze some dependencies.
 
