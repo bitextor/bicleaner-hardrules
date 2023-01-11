@@ -5,4 +5,4 @@ toolwrapper>=1.0,<=3
 joblib
 sacremoses==0.0.53
 fasttext==0.9.2
-fastspell==0.4
+fastspell==0.5
