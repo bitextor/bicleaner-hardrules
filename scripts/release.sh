@@ -26,4 +26,4 @@ rm dist/*-linux_x86_64.whl
 twine check dist/*
 # Upload only source and generic binary file
 #CAUTION WITH THE NAMES!
-twine upload dist/*.tar.gz dist/*-manylinux_x86_64.whl
+twine upload dist/*.tar.gz dist/*manylinux1_x86_64.whl
