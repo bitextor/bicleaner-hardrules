@@ -14,7 +14,8 @@ It also requires the [KenLM](https://github.com/kpu/kenlm) Python bindings with 
 You can easily install it by running the following command:
 
 ```bash
-pip install bicleaner-hardrules https://github.com/kpu/kenlm/archive/master.zip --install-option="--max_order 7"
+pip install bicleaner-hardrules
+pip install https://github.com/kpu/kenlm/archive/master.zip --install-option="--max_order 7"
 ```
 
 Since v1.3 hard-rules uses [FastSpell](https://github.com/mbanon/fastspell) that requires `python-dev` and `libhunspell-dev`:
@@ -218,6 +219,14 @@ If you find Bicleaner useful, please consider citing the following papers:
   publisher = {European Association for Machine Translation}
 }
 ```
+
+## Making a PyPi Release
+In the root dir of the repo, run:
+```bash
+./scripts/release.sh
+```
+This script will create source distribution, compile binary distribution and convert wheel file to generic python3.
+Then it will upload them to PyPi, you need a user account maintainer of `bicleaner-hardrules` in PyPi and user token.
 
 ___
 
