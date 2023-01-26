@@ -2,16 +2,13 @@
 set -e
 
 # install wheeltools
-pip install wheeltools auditwheel patchelf
+pip install -U "wheel<0.38" wheeltools auditwheel patchelf build twine
 
 # Empty dist dir and build dir
-rm -r dist/ _skbuild/
+rm -rf dist/ _skbuild/
 
-# Create source distribution separately to avoid including binary files
-python setup.py sdist
-# Create binary distribution
-# pass the -- -- install arguments to tell ninja to install the bins in the wheel
-python setup.py bdist_wheel -- --
+# Build source and binary distributions
+python -m build
 
 # Convert the platform-specific wheel to generic
 python scripts/convert_to_generic_platform_wheel.py dist/bicleaner_hardrules-*.whl
