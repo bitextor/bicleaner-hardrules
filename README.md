@@ -94,7 +94,7 @@ bicleaner-hardrules [-h]
 ### Parameters
 
 * positional arguments:
-  * `input`: Tab-separated files to be classified (default line format: `URL1 URL2 SOURCE_SENTENCE TARGET_SENTENCE [EXTRA_COLUMNS]`, tab-separated). When input is -, reads standard input.
+  * `input`: Tab-separated files to be classified (default line format: `SOURCE_SENTENCE TARGET_SENTENCE [EXTRA_COLUMNS]`, tab-separated). When input is -, reads standard input.
   * `output`: Output of the classification (default: standard output). When output is -, writes standard output.
 * Optional:
   * `--annotated_output`: Adds an extra column with each sentence's evaluation ("keep" if the sentence is good, otherwise the reason for rejecting (default: False)
