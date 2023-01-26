@@ -34,6 +34,7 @@ regex_url = regex.compile("(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256
 regex_breadcrumbs1 = regex.compile("([ ][-/][ ]|[<>*]|[ ][:][ ])")
 regex_breadcrumbs2 = regex.compile("([ ][»][ ]|[|→←•·¬])")
 regex_unicode_noise = regex.compile("[\x80-\xFF]{3,}")
+regex_unicode_noise_relaxed = regex.compile("[\x80-\xFF]{7,}")
 regex_spaces_noise = regex.compile("([ ]\D){4,}[ ]")
 #regex_paren = regex.compile("[][(){}]")
 regex_paren = r"\[|\]|\(|\)|{|}|⟨|⟩"
@@ -278,7 +279,15 @@ class Hardrules():
                 or len(regex_breadcrumbs2.findall(sentence)) < 2
 
     def c_no_unicode_noise(self, sentence, side):
-        return len(regex_unicode_noise.findall(sentence)) == 0
+        lang = self.src_lang
+        if side == "right":
+            lang = self.trg_lang
+
+        # Icelandic can have words with three or four high unicode values like 'þýðir'
+        if lang == 'is':
+            return len(regex_unicode_noise_relaxed.findall(sentence)) == 0
+        else:
+            return len(regex_unicode_noise.findall(sentence)) == 0
 
     def c_no_space_noise(self, sentence, side):
         return len(regex_spaces_noise.findall(sentence)) == 0
