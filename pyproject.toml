@@ -38,7 +38,7 @@ classifiers = [
 requires = [
     "setuptools>=45.0,<66",
     "cmake>=3.18",
-    "scikit-build==0.16.3",
+    "scikit-build==0.16.6",
     "ninja",
 ]
 build-backend = "setuptools.build_meta"
