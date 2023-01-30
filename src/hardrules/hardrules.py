@@ -281,7 +281,8 @@ class Hardrules():
             lang = self.trg_lang
 
         # Icelandic can have words with three or four high unicode values like 'þýðir'
-        if lang == 'is':
+        # Finish sometimes too
+        if lang in ('is', 'fi'):
             return len(regex_unicode_noise_relaxed.findall(sentence)) == 0
         else:
             return len(regex_unicode_noise.findall(sentence)) == 0
