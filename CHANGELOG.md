@@ -1,4 +1,7 @@
-Bicleaner Hardrules 2.5.1:
+Bicleaner Hardrules 2.7.0:
+* Relax unicode noise rule for Icelandic.
+
+Bicleaner Hardrules 2.6.0:
 * Update FastSpell to 0.5: some improvements for Slovene and Serbo-Croatian language detection.
 
 Bicleaner Hardrules 2.5.1:
