@@ -9,7 +9,7 @@ maintainers = [
 ]
 description = "Pre-filtering step for obvious noise based on rules, poor language based on general language modelling and vulgar language based on specific language modelling"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 dependencies = [
     "regex",
     "PyYAML",
