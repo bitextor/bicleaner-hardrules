@@ -1,3 +1,6 @@
+Bicleaner Hardrules 2.8.0:
+* Update KenLM installation instructions
+
 Bicleaner Hardrules 2.7.0:
 * Relax unicode noise rule for Icelandic and Finish.
 
