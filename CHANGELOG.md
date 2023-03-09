@@ -1,6 +1,6 @@
 Bicleaner Hardrules 2.8.0:
 * Update KenLM installation instructions
-* Update FastSpell to 0.7
+* Update FastSpell to 0.8
     * Dictionaries installed as a dependency.
     * Better coverage for Icelandic.
 
