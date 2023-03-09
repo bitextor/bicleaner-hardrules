@@ -1,5 +1,8 @@
 Bicleaner Hardrules 2.8.0:
 * Update KenLM installation instructions
+* Update FastSpell to 0.7
+    * Dictionaries installed as a dependency.
+    * Better coverage for Icelandic.
 
 Bicleaner Hardrules 2.7.0:
 * Relax unicode noise rule for Icelandic and Finish.

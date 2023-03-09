@@ -23,15 +23,9 @@ Since v1.3 hard-rules uses [FastSpell](https://github.com/mbanon/fastspell) that
 sudo apt install python-dev libhunspell-dev
 ```
 
-Also note that Hunspell language packages must be installed by hand if you are going to work with one of languages listed as [similar](https://github.com/mbanon/fastspell/blob/main/fastspell/config/similar.yaml), i.e.:
-```
-sudo apt-get install hunspell-es
-```
-or downloaded from an external source, such as https://github.com/wooorm/dictionaries/tree/main/dictionaries
+Hunspell dictionaries used by default are automatically installed.
+If you need to change default configuration for language identification, see https://github.com/mbanon/fastspell#configuration.
 
-You can also provide the path to the Hunspell dictionaries directories by using the dictpath atribute in `{/YOUR/INSTALLATION/PATH}/config/hunspell.yaml` (for example, `venv/lib/python3.7/site-packages/fastspell/config/hunspell.yaml` ) if you are installing from PyPI or with `setup.py`, or in `/config/hunspell.yaml` if you are running directly the code. Default path is `/usr/share/hunspell`.
-
-The remaining modules will be automatically downloaded and installed/upgraded (if required) with the first command.
 After installation, a binary file (`bicleaner-hardrules`) will be located in your `python/installation/prefix/bin` directory. This is usually `$HOME/.local/bin` or `/usr/local/bin/`.
 
 
