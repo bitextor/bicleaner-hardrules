@@ -40,7 +40,7 @@ regex_inconditional = regex.compile("=\"")
 regex_escaped_unicode = regex.compile("[\\\\][xu][0-9a-fA-F]{2,}") #matches stuff like \\u245 and \\xc3
 #regex_glued_words = regex.compile("\b[[:alpha:]]*[[:lower:]][[:upper:]][[:alpha:]]*)
 regex_glued_words = regex.compile("([[:alpha:]]*[[:upper:]]{1}[[:lower:]]+){3}")
-regex_repeated_words = regex.compile(r"\b(.+)\1\b")
+regex_repeated_words = regex.compile(r"\b(\w+(.+))\s?\1\b")
 regex_repeated_without_words = regex.compile(r"(.+)\1")
 
 safe_noise_detection_langs = {"en", "es", "fr", "pl", "de", "it", "pt", "nl", "cs", "ro", "fi", "lv", "et", "bg", "hr", "da", "hu", "ga", "eu", "gl", "sl", "sv", "mt", "sk", "is", "lt", "nb", "nn", "no"}
@@ -115,10 +115,12 @@ class Hardrules():
             self.fastspell_src = None
             self.fastspell_trg = None
 
+
         self.src_lang = args.source_lang
         self.trg_lang = args.target_lang
         self.run_all_rules = args.run_all_rules
         self.disable_minimal_length = args.disable_minimal_length
+        self.max_repeated_words = args.max_repeated_words
         self.rules = {n: f for n, f in getmembers(self) if n.startswith('c_')}
         logging.debug(f"Available rules: {self.rules.keys()}")
 
@@ -233,14 +235,17 @@ class Hardrules():
         if self.fastspell_src is None:
             return True
 
-        if side == 'left':
-            lang = self.src_lang
-            fastspell = self.fastspell_src
-        else:
-            lang = self.trg_lang
-            fastspell = self.fastspell_trg
+        # Check wrong language only if the length in characters is higher than 60
+        if len(sentence) >= 60:
+            if side == 'left':
+                lang = self.src_lang
+                fastspell = self.fastspell_src
+            else:
+                lang = self.trg_lang
+                fastspell = self.fastspell_trg
 
-        return fastspell.getlang(sentence) == lang
+            return fastspell.getlang(sentence) == lang
+        return True
 
     def c_lm_filter(self, left, right):
         if self.lm_filter is None:
@@ -341,13 +346,18 @@ class Hardrules():
         if lang in CJK:
             min_chars = 4
 
+        count = 0
         for match_obj in regex.finditer(our_regex, sentence):
             matching = match_obj.group().strip()
             # if match does not have a minimum length continue without discarding
             if len(matching) > min_chars:
                 r2 = regex.search("[[:alpha:]]", matching)
                 if r2:
-                    return False
+                    # if a certain count of repeated patterns has been reached, then return False
+                    count += 1
+                    if count >= self.max_repeated_words:
+                        return False
+
         return True
 
     def c_no_porn(self, left, right):
