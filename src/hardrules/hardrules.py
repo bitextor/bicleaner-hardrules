@@ -40,7 +40,7 @@ regex_inconditional = regex.compile("=\"")
 regex_escaped_unicode = regex.compile("[\\\\][xu][0-9a-fA-F]{2,}") #matches stuff like \\u245 and \\xc3
 #regex_glued_words = regex.compile("\b[[:alpha:]]*[[:lower:]][[:upper:]][[:alpha:]]*)
 regex_glued_words = regex.compile("([[:alpha:]]*[[:upper:]]{1}[[:lower:]]+){3}")
-regex_repeated_words = regex.compile(r"(\b\S+(.+))\s+\b\1")
+regex_repeated_words = regex.compile(r"(?i)(\b\S+(.+))\s+\b\1\b")
 regex_repeated_without_words = regex.compile(r"(.+)\1")
 
 safe_noise_detection_langs = {"en", "es", "fr", "pl", "de", "it", "pt", "nl", "cs", "ro", "fi", "lv", "et", "bg", "hr", "da", "hu", "ga", "eu", "gl", "sl", "sv", "mt", "sk", "is", "lt", "nb", "nn", "no"}
