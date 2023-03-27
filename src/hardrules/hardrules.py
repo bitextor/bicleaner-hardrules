@@ -65,7 +65,7 @@ class Hardrules():
     rule_pipeline['no_urls'] = False
     rule_pipeline['no_breadcrumbs'] = True
     rule_pipeline['no_glued_words'] = True
-    rule_pipeline['no_repeated_words'] = True
+    rule_pipeline['no_repeated_words'] = 1
     rule_pipeline['no_unicode_noise'] = True
     rule_pipeline['no_space_noise'] = True
     rule_pipeline['no_paren'] = True
@@ -74,7 +74,7 @@ class Hardrules():
     rule_pipeline['no_titles'] = True
     rule_pipeline['no_number_inconsistencies'] = False
     rule_pipeline['no_script_inconsistencies'] = False
-    rule_pipeline['no_wrong_language'] = True
+    rule_pipeline['no_wrong_language'] = 1
     rule_pipeline['no_porn'] = True
     rule_pipeline['lm_filter'] = True
     
@@ -120,7 +120,6 @@ class Hardrules():
         self.trg_lang = args.target_lang
         self.run_all_rules = args.run_all_rules
         self.disable_minimal_length = args.disable_minimal_length
-        self.max_repeated_words = args.max_repeated_words
         self.rules = {n: f for n, f in getmembers(self) if n.startswith('c_')}
         logging.debug(f"Available rules: {self.rules.keys()}")
 
@@ -142,6 +141,12 @@ class Hardrules():
         for rule_name in self.config.keys():
             if 'c_' + rule_name not in self.rules:
                 raise NotImplementedError(f"Rule {rule_name} is not implemented")
+
+        # Check if user wants to carry out wrong language filtering
+        # using a specified sentence length or not
+        self.lang_check = False
+        if self.config['no_wrong_language'] == 1 or self.config['no_wrong_language'] == True:
+            self.lang_check = True
 
     def wrong_tu(self, left, right):
         # Create list of discard tags
@@ -235,8 +240,8 @@ class Hardrules():
         if self.fastspell_src is None:
             return True
 
-        # Check wrong language only if the length in characters is higher than 60
-        if len(sentence) >= 60:
+        # Check wrong language only if the length in characters is higher than the value set by the user
+        if self.lang_check or len(sentence) >= self.config['no_wrong_language']:
             if side == 'left':
                 lang = self.src_lang
                 fastspell = self.fastspell_src
@@ -355,7 +360,7 @@ class Hardrules():
                 if r2:
                     # if a certain count of repeated patterns has been reached, then return False
                     count += 1
-                    if count >= self.max_repeated_words:
+                    if count >= self.config['no_repeated_words']:
                         return False
 
         return True

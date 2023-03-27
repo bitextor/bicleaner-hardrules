@@ -51,7 +51,6 @@ def initialization():
     groupO.add_argument('-A', '--run_all_rules',action='store_true', help="Run all rules for each sentence instead of stopping at first discard", default=False)
     groupO.add_argument('--disable_lang_ident', default=False, action='store_true', help="Don't apply rules that use language detecting")
     groupO.add_argument('--disable_minimal_length', default=False, action='store_true', help="Don't apply minimal length rule")
-    groupO.add_argument('--max_repeated_words', default=1, type=check_positive, help="Maximum consecutive words/patterns allowed")
     groupO.add_argument('--disable_porn_removal', default=False, action='store_true', help="Don't apply porn removal")
 
     groupO.add_argument("-s", "--source_lang", type=str, default=None,  help="Source language (SL) of the input")

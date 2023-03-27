@@ -154,7 +154,7 @@ no_only_numbers	The ratio of numeric characters in source sentence is too high
 no_urls	There are URLs (disabled by default)
 no_breadcrumbs	There are more than 2 breadcrumb characters in the sentence
 no_glued_words	There are words in the sentence containing too many uppercased characters between lowercased characters
-no_repeated_words There are words repeated consecutively
+no_repeated_words There are more than 1 consecutive words repeated
 no_unicode_noise	Too many characters from unwanted unicode in source sentence
 no_space_noise	Too many consecutive single characters separated by spaces in the sentence (excludes digits)
 no_paren	Too many parenthesis or brackets in sentence
