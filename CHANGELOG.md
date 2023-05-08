@@ -1,3 +1,7 @@
+Bicleaner Hardrules 2.8.1:
+* Fix `no_url` regex
+* Fix builds with pip >= 23 using `fasttext-wheel`.
+
 Bicleaner Hardrules 2.8.0:
 * Update KenLM installation instructions
 * Update FastSpell to 0.8
