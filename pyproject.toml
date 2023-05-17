@@ -18,7 +18,7 @@ dependencies = [
     "joblib",
     "sacremoses==0.0.53",
     "fasttext-wheel==0.9.2",
-    "fastspell==0.9",
+    "fastspell==0.9.1",
 ]
 classifiers = [
     "Environment :: Console",
