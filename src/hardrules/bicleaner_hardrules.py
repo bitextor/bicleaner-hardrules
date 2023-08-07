@@ -65,7 +65,7 @@ def initialization():
     
     #LM  filtering
     groupO.add_argument('--disable_lm_filter', default=False, action='store_true', help="Don't apply LM filtering")
-    groupO.add_argument('--metadata', type=argparse.FileType('r'), default=None, help="Bicleaner metadata (YAML file)")
+    groupO.add_argument('--metadata', type=str, default=None, help="Bicleaner metadata (YAML file)")
     groupO.add_argument('--lm_threshold',type=check_positive_between_zero_and_one, default=0.5, help="Threshold for language model fluency scoring.")
     #groupO.add_argument('--keep_lm_result',action='store_true', help="Add an additional column to the results with the language model fluency score.")
 
@@ -91,13 +91,16 @@ def initialization():
         # before running hardrules
         fsobj = FastSpell("en", mode="aggr")
 
+    metadata_path = real_metadata_path(args.metadata)
+
     #Try loading metadata for LM filtering and porn removal
     if not (args.disable_lm_filter and args.disable_porn_removal) and args.metadata != None:
         logging.info("Loading metadata info")
 
         try:
-            args.metadata_yaml = yaml.safe_load(args.metadata)
-            args.metadata_yaml["yamlpath"] = os.path.dirname(os.path.abspath(args.metadata.name))
+            with open(metadata_path) as f:
+                args.metadata_yaml = yaml.safe_load(f)
+            args.metadata_yaml["yamldir"] = os.path.dirname(os.path.abspath(metadata_path))
 
             if not ("source_lm" in args.metadata_yaml and "target_lm" in args.metadata_yaml):
                 args.disable_lm_filter = True
@@ -107,7 +110,7 @@ def initialization():
                 logging.warning("Porn removal classifier not present in metadata.")
             else:
                 try:
-                    args.porn_removal = fasttext.load_model(os.path.join(args.metadata_yaml["yamlpath"], args.metadata_yaml['porn_removal_file']))
+                    args.porn_removal = fasttext.load_model(os.path.join(args.metadata_yaml["yamldir"], args.metadata_yaml['porn_removal_file']))
                 except:
                     args.porn_removal = fasttext.load_model(args.metadata_yaml['porn_removal_file'])
 
@@ -137,8 +140,9 @@ def initialization():
         else:
             try:
                 if not "metadata_yaml" in args  or args.metadata_yaml == None:
-                    args.metadata_yaml = yaml.safe_load(args.metadata)
-                #args.metadata_yaml["yamlpath"] = os.path.dirname(os.path.abspath(args.metadata.name))
+                    with open(metadata_path) as f:
+                        args.metadata_yaml = yaml.safe_load(f)
+                #args.metadata_yaml["yamldir"] = os.path.dirname(os.path.abspath(args.metadata.name))
 
                 args.source_lang=args.metadata_yaml["source_lang"]
                 args.target_lang=args.metadata_yaml["target_lang"]    
@@ -159,6 +163,26 @@ def initialization():
         logging.info("Porn removal disabled.")
 
     return args
+
+
+def real_metadata_path(path):
+    if os.path.exists(path):
+        # local path, we just use it, return abs path
+        return path
+    elif not path.startswith('bitextor/bicleaner-ai'):
+        # In case does not exist, check if it follows the pattern of HF bicleaner-ai models
+        # If not, just raise the error
+        raise FileNotFoundError(f"No such file or directory: {path}'.")
+
+    from huggingface_hub import snapshot_download
+    try:
+        new_path = snapshot_download(path, local_files_only=True)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Could not find '{path}' in local HF cache, " \
+            "please download it with 'bicleaner-ai-download' before running hardrules")
+
+    return f"{new_path}/metadata.yaml"
+
 
 def reduce_process(output_queue, args):
     h = []

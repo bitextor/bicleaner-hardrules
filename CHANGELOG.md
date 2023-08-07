@@ -1,3 +1,6 @@
+Bicleaner Hardrules 2.9.0:
+* Accept HF identifiers in `--metadata` argument.
+
 Bicleaner Hardrules 2.8.1:
 * Fix `no_url` regex
 * Fix builds with pip >= 23 using `fasttext-wheel`.
