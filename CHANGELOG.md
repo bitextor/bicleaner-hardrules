@@ -1,3 +1,8 @@
+Bicleaner Hardrules 2.10.0:
+* Update FastSpell to 0.10 with more languages support:
+  * https://github.com/mbanon/fastspell/blob/v0.10/CHANGELOG.md
+
+
 Bicleaner Hardrules 2.9.1:
 * Fix hardrules crash without metadata.
 
