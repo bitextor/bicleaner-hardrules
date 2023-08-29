@@ -1,3 +1,6 @@
+Bicleaner Hardrules 2.9.1:
+* Fix hardrules crash without metadata.
+
 Bicleaner Hardrules 2.9.0:
 * Accept HF identifiers in `--metadata` argument.
 

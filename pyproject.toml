@@ -1,6 +1,6 @@
 [project]
 name = "bicleaner-hardrules"
-version = "2.9.0"
+version = "2.9.1"
 authors = [
     { name="Prompsit Language Engineering", email="info@prompsit.com" },
 ]

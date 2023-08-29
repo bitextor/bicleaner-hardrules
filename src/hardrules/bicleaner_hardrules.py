@@ -166,7 +166,7 @@ def initialization():
 
 
 def real_metadata_path(path):
-    if os.path.exists(path):
+    if path is None or os.path.exists(path):
         # local path, we just use it, return abs path
         return path
     elif not path.startswith('bitextor/bicleaner-ai'):
