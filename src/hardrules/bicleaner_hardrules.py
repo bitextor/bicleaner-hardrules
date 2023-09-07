@@ -52,6 +52,7 @@ def initialization():
     groupO.add_argument('--disable_lang_ident', default=False, action='store_true', help="Don't apply rules that use language detecting")
     groupO.add_argument('--disable_minimal_length', default=False, action='store_true', help="Don't apply minimal length rule")
     groupO.add_argument('--disable_porn_removal', default=False, action='store_true', help="Don't apply porn removal")
+    groupO.add_argument('--dont_ignore_long', default=False, action='store_true', help="Don't ignore too long sentences")
 
     groupO.add_argument("-s", "--source_lang", type=str, default=None,  help="Source language (SL) of the input")
     groupO.add_argument("-t", "--target_lang", type=str, default=None,  help="Target language (TL) of the input")
@@ -248,14 +249,22 @@ def worker_process(i, jobs_queue, output_queue, args):
                     if len(parts) >=  args.scol and len(parts) >= args.tcol:
                         left = parts[args.scol-1]
                         right = parts[args.tcol-1]
-                        wrong_tu_results = hardrules.wrong_tu(left, right)
+                        wrong_tu_results = False
                     else:
                         logging.error("scol ({}) or tcol ({}) indexes above column number ({})".format(args.scol, args.tcol, len(parts)))
-                        wrong_tu_results = ["c_wrong_cols"]
+                        wrong_tu_results = ["c_missing_columns"]
 
                     # Print input sentences when scoring_only is disabled
                     if not args.score_only:
                         fileout.write("\t".join(parts) + "\t")
+
+                    # Check if dont_ignore_long is enabled and TU is longer than allowed
+                    if not args.dont_ignore_long and (len(left) > 10000 and len(right) > 10000):
+                        wrong_tu_results = ["c_not_too_long"]
+
+                    # Run hardrules for TU if all previous checks pass
+                    if wrong_tu_results == False:
+                        wrong_tu_results = hardrules.wrong_tu(left, right)
 
                     # Print scores
                     if wrong_tu_results != False:

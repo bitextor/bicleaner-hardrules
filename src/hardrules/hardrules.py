@@ -43,11 +43,14 @@ regex_glued_words = regex.compile("([[:alpha:]]*[[:upper:]]{1}[[:lower:]]+){3}")
 regex_repeated_words = regex.compile(r"(?i)(\b\S+(.+))\s+\b\1\b")
 regex_repeated_without_words = regex.compile(r"(.+)\1")
 
-safe_noise_detection_langs = {"en", "es", "fr", "pl", "de", "it", "pt", "nl", "cs", "ro", "fi", "lv", "et", "bg", "hr", "da", "hu", "ga", "eu", "gl", "sl", "sv", "mt", "sk", "is", "lt", "nb", "nn", "no"}
+safe_noise_detection_langs = {"en", "es", "fr", "pl", "de", "it", "pt", "nl", "cs", "ro", "fi", "lv", 
+                              "et", "bg", "hr", "da", "hu", "ga", "eu", "gl", "sl", "sv", "mt", "sk", 
+                              "is", "lt", "nb", "nn", "no", "ur", "sw", "my", "so", "bn", "fa", "gu"}
 
 #similar_pairs = [{"es","ca"}, {"es","gl"}, {"pt","gl"}, {"no","nn"}, {"no", "da"}]
 atilde_langs = {"pt"}
 acumflex_langs = {"cy", "fr", "fa", "it", "pt", "tr", "vi",}
+relaxed_unicode_langs = ('is', 'fi', 'az')
 CJK = {"zh", "ja", "ko"}
 
 class Hardrules():
@@ -57,7 +60,7 @@ class Hardrules():
     rule_pipeline['no_empty'] = True
     rule_pipeline['not_too_long'] = 1024
     rule_pipeline['not_too_short'] = 3
-    rule_pipeline['length_ratio'] = 2.0
+    rule_pipeline['length_ratio'] = 3.0
     rule_pipeline['no_identical'] = True
     rule_pipeline['no_literals'] = ["Re:","{{", "%s", "}}", "+++", "***", '=\"']
     rule_pipeline['no_only_symbols'] = True
@@ -202,7 +205,9 @@ class Hardrules():
     def c_no_empty(self, sentence, side):
         return sentence != ""
 
-    def c_no_titles(self, left, right):    
+    def c_no_titles(self, left, right):
+        if len(left) == 0 or len(right) == 0:
+            return True
         return not ((len(left.strip().split(" ")) > 1 and left.istitle()) and (len(right.strip().split(" ")) > 1 and right.istitle()))
 
     def c_not_too_long(self, sentence, side):
@@ -237,6 +242,9 @@ class Hardrules():
             return lower_ratio <= len(left)/len(right) <= upper_ratio
 
     def c_no_wrong_language(self, sentence, side='left'):
+        if len(sentence) == 0:
+            return True
+        
         if self.fastspell_src is None:
             return True
 
@@ -267,9 +275,14 @@ class Hardrules():
         return True
 
     def c_no_only_symbols(self, sentence, side):
+        if len(sentence) == 0:
+            return True
         return len(regex_alpha.findall(sentence)) / len(sentence) > 0.1
 
     def c_no_only_numbers(self, sentence, side):
+        if len(sentence) == 0:
+            return True
+        
         lang = self.src_lang if side == 'left' else self.trg_lang
         threshold = 0.5
         if lang in CJK:
@@ -291,8 +304,8 @@ class Hardrules():
             lang = self.trg_lang
 
         # Icelandic can have words with three or four high unicode values like 'þýðir'
-        # Finish sometimes too
-        if lang in ('is', 'fi'):
+        # Finish and Azerbaijani sometimes too
+        if lang in relaxed_unicode_langs:
             return len(regex_unicode_noise_relaxed.findall(sentence)) == 0
         else:
             return len(regex_unicode_noise.findall(sentence)) == 0

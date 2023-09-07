@@ -72,6 +72,7 @@ bicleaner-hardrules [-h]
                     [--tcol TCOL]
                     [--disable_lm_filter]
                     [--disable_porn_removal]
+                    [--dont_ignore_long]
                     [--metadata METADATA]
                     [--lm_threshold LM_THRESHOLD]
                     [-q]
@@ -111,7 +112,8 @@ bicleaner-hardrules [-h]
   * `--disable_hardrules`: Disables the bicleaner_hardrules filtering (only bicleaner_classify is applied) (default: False)
   * `--disable_lm_filter`: Disables LM filtering.
   * `--disable_porn_removal`: Disables porn removal.
-  * `--disable_minimal_length` : Don't apply minimal length rule (default: False).
+  * `--disable_minimal_length`: Don't apply minimal length rule (default: False).
+  * `--dont_ignore_long`: Don't ingore sentences that are longer than 10000 characters (default: False).
   * `-h, --help`: show this help message and exit
 
 * Logging:
