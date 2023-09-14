@@ -259,7 +259,7 @@ def worker_process(i, jobs_queue, output_queue, args):
                         fileout.write("\t".join(parts) + "\t")
 
                     # Check if dont_ignore_long is enabled and TU is longer than allowed
-                    if not args.dont_ignore_long and (len(left) > 10000 and len(right) > 10000):
+                    if not args.dont_ignore_long and (len(left) > 10000 or len(right) > 10000):
                         wrong_tu_results = ["c_not_too_long"]
 
                     # Run hardrules for TU if all previous checks pass
