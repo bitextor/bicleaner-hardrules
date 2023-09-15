@@ -1,4 +1,4 @@
-Bicleaner Hardrules 2.11:
+Bicleaner Hardrules 2.10.1:
 * Fix division by 0 error on empty sentences.
 * Fix rules that were giving false positives on empty sentences (no_titles, wrong_language)
 * For performance, long sentences (> 10000 characters) are ignored by default, only "not_too_long" is outputed.
@@ -7,7 +7,6 @@ Bicleaner Hardrules 2.11:
 Bicleaner Hardrules 2.10.0:
 * Update FastSpell to 0.10 with more languages support:
   * https://github.com/mbanon/fastspell/blob/v0.10/CHANGELOG.md
-
 
 Bicleaner Hardrules 2.9.1:
 * Fix hardrules crash without metadata.
