@@ -1,4 +1,7 @@
-Bicleaner Hardrules 2.10.1:
+Bicleaner Hardrules 2.10.3:
+ - Bumped FastSpell version
+  
+Bicleaner Hardrules 2.10.2:
 - Fix 2.10.1 build.
 
 Bicleaner Hardrules 2.10.1:
