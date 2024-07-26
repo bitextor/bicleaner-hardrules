@@ -1,3 +1,6 @@
+Bicleaner Hardrules 2.10.5:
+- Bump FastSpell version.
+
 Bicleaner Hardrules 2.10.4:
 - Bumped HF hub version.
 
