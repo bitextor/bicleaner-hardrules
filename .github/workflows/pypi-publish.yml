@@ -34,7 +34,9 @@ jobs:
         pip install --config-settings="--build-option=--max_order=7" https://github.com/kpu/kenlm/archive/master.zip
         pip install build
     - name: Build package
-      run: python -m build
+      run: | 
+        pip install --config-settings="--build-option=--max_order=7" https://github.com/kpu/kenlm/archive/master.zip
+        python -m build
 
     - name: Publish package
       uses: pypa/gh-action-pypi-publish@v1.8.14
