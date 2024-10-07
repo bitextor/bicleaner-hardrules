@@ -1,3 +1,6 @@
+Bicleaner Hardrules 2.10.6:
+- Reduced the maximum number of glued words permitted from 3 to 2.
+
 Bicleaner Hardrules 2.10.5:
 - Bump FastSpell version.
 
