@@ -1,5 +1,6 @@
 Bicleaner Hardrules 2.10.6:
 - Reduced the maximum number of glued words permitted from 3 to 2.
+- Relaxed bad encoding rule for more langs where "â" can happen (Romanian and Ligurian)
 
 Bicleaner Hardrules 2.10.5:
 - Bump FastSpell version.
