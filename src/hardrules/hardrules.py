@@ -49,7 +49,7 @@ safe_noise_detection_langs = {"en", "es", "fr", "pl", "de", "it", "pt", "nl", "c
 
 #similar_pairs = [{"es","ca"}, {"es","gl"}, {"pt","gl"}, {"no","nn"}, {"no", "da"}]
 atilde_langs = {"pt"}
-acumflex_langs = {"cy", "fr", "fa", "it", "pt", "tr", "vi",}
+acumflex_langs = {"cy", "fr", "fa", "it", "pt", "tr", "vi", "lij", "ro"}
 relaxed_unicode_langs = ('is', 'fi', 'az')
 CJK = {"zh", "ja", "ko"}
 
