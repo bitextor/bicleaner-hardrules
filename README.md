@@ -32,7 +32,7 @@ After installation, a binary file (`bicleaner-hardrules`) will be located in you
 ### Installing from source
 When installing from source, either directly from the cloned repository
 ```
-git clone https://github.com/bitextor/bicleaner-hardrules
+git clone --recursive https://github.com/bitextor/bicleaner-hardrules
 cd bicleaner-hardrules
 pip install .
 ```
