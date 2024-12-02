@@ -252,7 +252,7 @@ def worker_process(i, jobs_queue, output_queue, args):
                         wrong_tu_results = False
                     else:
                         logging.error("scol ({}) or tcol ({}) indexes above column number ({})".format(args.scol, args.tcol, len(parts)))
-                        wrong_tu_results = ["c_missing_columns"]
+                        wrong_tu_results = ["missing_columns"]
 
                     # Print input sentences when scoring_only is disabled
                     if not args.score_only:
@@ -260,7 +260,7 @@ def worker_process(i, jobs_queue, output_queue, args):
 
                     # Check if dont_ignore_long is enabled and TU is longer than allowed
                     if not args.dont_ignore_long and (len(left) > 10000 or len(right) > 10000):
-                        wrong_tu_results = ["c_not_too_long"]
+                        wrong_tu_results = ["not_too_long"]
 
                     # Run hardrules for TU if all previous checks pass
                     if wrong_tu_results == False:
