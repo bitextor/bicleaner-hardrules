@@ -51,7 +51,7 @@ safe_noise_detection_langs = {"en", "es", "fr", "pl", "de", "it", "pt", "nl", "c
 atilde_langs = {"pt"}
 acumflex_langs = {"cy", "fr", "fa", "it", "pt", "tr", "vi", "lij", "ro"}
 relaxed_unicode_langs = ('is', 'fi', 'az')
-CJK = {"zh", "ja", "ko"}
+CJK = {"zh", "ja", "ko", "yue"}
 
 class Hardrules():
     # Define default settings
