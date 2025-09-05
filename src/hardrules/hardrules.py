@@ -296,7 +296,7 @@ class Hardrules():
 
     def c_no_breadcrumbs(self, sentence, side):
         return len(regex_breadcrumbs1.findall(sentence)) < 3 \
-                or len(regex_breadcrumbs2.findall(sentence)) < 2
+                and len(regex_breadcrumbs2.findall(sentence)) < 2
 
     def c_no_unicode_noise(self, sentence, side):
         lang = self.src_lang
