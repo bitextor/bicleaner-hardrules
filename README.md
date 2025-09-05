@@ -150,11 +150,11 @@ When using the `--annotated_output` flag, an extra column with each sentence's e
 
 ```
 no_empty	Sentence is empty
-not_too_long	Sentence is more than 1024 characters long
-not_too_short	Sentence is less than	3 words long
-length_ratio	The length ratio between the source sentence and target sentence (in bytes) is too low or too high
+not_too_long	Sentence is more than 1024 characters long. By default 1024, but also accepts integer values to set a custom threshold.
+not_too_short	Sentence is less than	3 words long. By default 3, but also accepts integer values to set a custom threshold.
+length_ratio	The length ratio between the source sentence and target sentence (in bytes) is too low (1/3 times smaller) or too high (3 times larger). By default 3.0, but also accepts float values to set a custom threshold.
 no_identical	Alphabetic content in source sentence and target sentence is identical
-no_literals  Unwanted literals: "Re:","{{", "%s", "}}", "+++", "***", '=\"'
+no_literals  Unwanted literals: "Re:","{{", "%s", "}}", "+++", "***", '=\"'. Also accepts a list of strings with custom literals.
 no_only_symbols	The ratio of non-alphabetic characters in source sentence is more than 90%
 no_only_numbers	The ratio of numeric characters in source sentence is too high
 no_urls	There are URLs (disabled by default)
