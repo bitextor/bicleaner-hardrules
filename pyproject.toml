@@ -1,6 +1,6 @@
 [project]
 name = "bicleaner-hardrules"
-version = "2.10.7"
+version = "2.10.8"
 authors = [
     { name="Prompsit Language Engineering", email="info@prompsit.com" },
 ]
@@ -37,9 +37,9 @@ classifiers = [
 
 [build-system]
 requires = [
-    "setuptools>=45.0,<66",
+    "setuptools>=66.0,<81",
     "cmake>=3.18",
-    "scikit-build==0.16.6",
+    "scikit-build==0.18.1",
     "ninja",
 ]
 build-backend = "setuptools.build_meta"

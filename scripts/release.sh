@@ -2,13 +2,13 @@
 set -e
 
 # install wheeltools
-python3 -m pip install -U "wheel<0.38" wheeltools auditwheel patchelf build twine
+uv pip install -U "wheel<0.38" wheeltools auditwheel patchelf build twine
 
 # Empty dist dir and build dir
 rm -rf dist/ _skbuild/
 
 # Build source and binary distributions
-python3 -m build
+uv build
 
 # Convert the platform-specific wheel to generic
 python3 scripts/convert_to_generic_platform_wheel.py dist/bicleaner_hardrules-*.whl
