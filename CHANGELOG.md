@@ -1,3 +1,8 @@
+Bicleaner Hardrules 2.10.8:
+- Relax HF hub requirement
+- Update build dependencies
+- Update kenlm build dependency
+
 Bicleaner Hardrules 2.10.7:
 - Added 3-letter codes for CJK exceptions.
 
